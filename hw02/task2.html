@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>task2</title>
+<style>
+body {
+	width: 35em;
+	margin: 0 auto;
+	font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+</style>
+</head>
+<body>
+	<div>
+		<h1 id="headingNumber"></h1>
+
+		<button type="button" id="alert">Alert</button>
+
+		<button type="button" id="addOne">Increase By 1</button>
+
+		<button type="button" id="newParagraph">New Paragraph</button>
+
+		<div id="div1"></div>
+
+	</div>
+
+	<script>
+		window.onload = function() {
+			var number = 10;
+			var bt_alert = document.getElementById("alert");
+			var bt_addOne = document.getElementById("addOne");
+			var bt_newParagraph = document.getElementById("newParagraph");
+
+			document.getElementById("headingNumber").innerHTML = number
+
+			bt_alert.onclick = function() {
+				window.alert(number);
+			}
+
+			bt_addOne.onclick = function() {
+				number = number + 1;
+				document.getElementById("headingNumber").innerHTML = number;
+			}
+
+			bt_newParagraph.onclick = function() {
+				var div = document.getElementById("div1");
+				var para = document.createElement("p");
+				var node = document.createTextNode(number);
+				para.appendChild(node);
+				div.appendChild(para);
+			}
+		}
+	</script>
+
+</body>
+</html>
+
+
