@@ -82,6 +82,7 @@ button:hover {
 		</div>
 		<div id="div1" class="right">
 			<div id="div2">
+				<p>(from https://loremipsumgenerator.com/)</p>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing
 					elit, sed do eiusmod tempor incididunt ut labore et dolore magna
 					aliqua. Luctus accumsan tortor posuere ac ut consequat semper
@@ -150,6 +151,11 @@ button:hover {
 				var newDiv2 = document.createElement("div");
 				newDiv2.id = "div2";
 
+				var para0 = document.createElement("p");
+                                var node0 = document.createTextNode("(from https://loremipsumgenerator.com/)");
+				para0.appendChild(node0);
+                                newDiv2.appendChild(para0);
+
 				var para1 = document.createElement("p");
 				var node1 = document
 						.createTextNode("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Luctus accumsan tortor posuere ac ut consequat semper viverra. Aliquam purus sit amet luctus venenatis lectus magna. Nunc consequat interdum varius sit. Blandit cursus risus at ultrices. Felis eget velit aliquet sagittis id consectetur. Eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Consectetur adipiscing elit duis tristique sollicitudin nibh. Non arcu risus quis varius quam. Eget mauris pharetra et ultrices neque ornare aenean euismod elementum. Convallis convallis tellus id interdum velit laoreet id. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel. Tempor orci eu lobortis elementum nibh tellus molestie nunc non. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque.");
@@ -183,6 +189,12 @@ button:hover {
 				div1.removeChild(div2);
 				var newDiv2 = document.createElement("div");
 				newDiv2.id = "div2";
+				
+				var para0 = document.createElement("p");
+                                var node0 = document.createTextNode("(from http://www.99-bottles-of-beer.net/lyrics.html)");
+                                para0.appendChild(node0);
+                                newDiv2.appendChild(para0);
+
 
 				var para1 = document.createElement("p");
 				var node1 = document
