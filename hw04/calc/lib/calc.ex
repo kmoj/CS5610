@@ -82,7 +82,7 @@ defmodule Calc do
 
   #GIVEN: a exp
   #RETURN: the result from the math evaluation of it
-  #WHERE: the the next math opperation going to do is either + or -
+  #WHERE: the next math opperation going to do is either + or -
   def add_minus_helper(multi_div_result) do
       lhs = multi_div_result[:acc]
       op = List.first(multi_div_result[:expr])
@@ -134,7 +134,7 @@ defmodule Calc do
 
   #GIVEN: a exp
   #RETURN: the result from the math evaluation of it
-  #WHERE: the the next math opperation going to do is either * or /
+  #WHERE: the next math opperation going to do is either * or /
   def multi_div_helper(factor_result) do
       lhs = factor_result[:acc]
       op = List.first(factor_result[:expr])
@@ -246,7 +246,7 @@ defmodule Calc do
 
   #GIVEN: a string
   #RETURN: boolean
-  #ture if the string is only contain char digits
+  #ture if the string only contains char digits
   def is_integer?(arg) do
     list =  String.splitter(arg, "", trim: true)
     Enum.all?(list, fn(x) -> is_digit?(x) end)

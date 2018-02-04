@@ -80,7 +80,7 @@ defmodule CalcTest do
   test "is_digit? function" do
   	assert Calc.is_integer?("1") == true
     assert Calc.is_integer?(".") == false
-    assert Calc.is_integer?("+") == false
+    assert Calc.is_integer?("(") == false
   end
 
 end
