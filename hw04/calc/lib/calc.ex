@@ -3,15 +3,6 @@ defmodule Calc do
   Documentation for Calc.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Calc.eval
-      :world
-
-  """
 
   def main() do
     case IO.gets(">") do
@@ -96,12 +87,19 @@ defmodule Calc do
         #   tail = Enum.take(rhs_exp[:expr], 1 - Enum.count(rhs_exp[:expr]))
         # end
 
+      if rhs == nil do
+        rhs = 1
+        error_flag = "Error: rhs is missing"
+      else
+        error_flag = rhs_exp[:error]
+      end
+
        if op == "+" do
         #IO.puts("add_minus_helper rhs in *")
         #IO.inspect(rhs)
-          calculate_result = %{:acc => lhs + rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
+          calculate_result = %{:acc => lhs + rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => error_flag}
        else
-          calculate_result = %{:acc => lhs - rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
+          calculate_result = %{:acc => lhs - rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => error_flag}
        end
        #IO.puts(" add_minus_helper 111")
        #IO.puts(calculate_result[:expr])
@@ -141,13 +139,18 @@ defmodule Calc do
         # else
         #   tail = Enum.take(rhs_exp[:expr], 1 - Enum.count(rhs_exp[:expr]))
         # end
+        error_flag = rhs_exp[:error]
+        if rhs == nil do
+          rhs = 0
+          error_flag = "Error: rhs is missing"
+        end
 
        if op == "*" do
         #IO.puts("rhs in *")
         #IO.inspect(rhs)
-          calculate_result = %{:acc => lhs * rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
+          calculate_result = %{:acc => lhs * rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => error_flag}
        else
-          if rhs == 0 do
+          if rhs == 0 || rhs == nil do
             rhs = 1
             error_flag = "Error: rhs of div opperation can not be 0"
           else
@@ -167,7 +170,7 @@ defmodule Calc do
     #IO.puts("factor: " )
     #IO.inspect(exp[:expr])
     if exp[:expr] == nil ||  List.first(exp[:expr]) == nil do
-      exp
+      %{:acc => exp[:acc], :int => nil, :expr => exp[:expr], :error => exp[:error]}
     else
       
       head = List.first(exp[:expr])
