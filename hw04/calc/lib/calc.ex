@@ -27,10 +27,31 @@ defmodule Calc do
 
 
   def eval(str) do
-    list = String.split(str)
-    exp = %{:int => nil, :acc => nil, :expr => list}
-    final_result = add_minus(exp)
-    final_result[:acc]
+    str = String.trim(str)
+    if String.length(str) == 0 || String.length(str) == 1 do
+      str
+    else
+      exp = %{:int => nil, :acc => nil, :expr => syntax_process(str)}
+      final_result = add_minus(exp)
+      final_result[:acc]
+    end
+  end
+
+  def syntax_process(str)  do
+    str
+    |>String.splitter("")
+    |>Enum.map(fn (x) -> insert_space(x)  end)
+    |>List.to_string()
+    |>String.trim()
+    |>String.split()
+  end
+
+  def insert_space(x) do
+    if x == "+" || x == "-" || x == "*" || x == "/" || x == "(" || x == ")" do
+      " "<>x<>" "
+    else
+      x
+    end
   end
 
   def add_minus(exp) do
@@ -48,7 +69,7 @@ defmodule Calc do
     # #IO.inspect(exp[:expr])
     # cond do
     #   Enum.count(exp[:expr]) == 0 -> exp
-    #   #Enum.count(exp[:expr]) == 1 -> %{:acc => String.to_integer(List.first(exp[:expr])), :expr => exp[:expr]}
+    #   #Enum.count(exp[:expr]) == 1 -> %{:acc => String.to_float(List.first(exp[:expr])), :expr => exp[:expr]}
     #   true -> result = multi_div(exp)
     # end
       lhs = multi_div_result[:acc]
@@ -75,7 +96,7 @@ defmodule Calc do
         #IO.inspect(rhs)
           calculate_result = %{:acc => lhs + rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
        else
-          calculate_result = %{:acc => lhs - rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
+          calculate_result = %{:acc => lhs / rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
        end
        #IO.puts(" add_minus_helper 111")
        #IO.puts(calculate_result[:expr])
