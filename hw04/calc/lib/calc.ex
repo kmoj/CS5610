@@ -31,9 +31,14 @@ defmodule Calc do
     if String.length(str) == 0 || String.length(str) == 1 do
       str
     else
-      exp = %{:int => nil, :acc => nil, :expr => syntax_process(str)}
+      exp = %{:int => nil, :acc => nil, :expr => syntax_process(str), :error => nil}
       final_result = add_minus(exp)
-      final_result[:acc]
+      #IO.inspect(final_result[:error])
+      if final_result[:error] == nil do
+        final_result[:acc]
+      else
+        final_result[:error]
+      end
     end
   end
 
@@ -80,7 +85,7 @@ defmodule Calc do
       op = List.first(multi_div_result[:expr])
       tail = Enum.take(multi_div_result[:expr], 1 - Enum.count(multi_div_result[:expr]))
       if op == "+" || op == "-" do
-        new_exp = %{:acc => nil, :int => nil, :expr => tail}
+        new_exp = %{:acc => nil, :int => nil, :expr => tail, :error => multi_div_result[:error]}
         rhs_exp = multi_div(new_exp)
         #IO.puts("add_minus_helper find rhs")
         rhs = rhs_exp[:acc]
@@ -94,9 +99,9 @@ defmodule Calc do
        if op == "+" do
         #IO.puts("add_minus_helper rhs in *")
         #IO.inspect(rhs)
-          calculate_result = %{:acc => lhs + rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
+          calculate_result = %{:acc => lhs + rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
        else
-          calculate_result = %{:acc => lhs / rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
+          calculate_result = %{:acc => lhs - rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
        end
        #IO.puts(" add_minus_helper 111")
        #IO.puts(calculate_result[:expr])
@@ -126,7 +131,7 @@ defmodule Calc do
       op = List.first(factor_result[:expr])
       tail = Enum.take(factor_result[:expr], 1 - Enum.count(factor_result[:expr]))
       if op == "*" || op == "/" do
-        new_exp = %{:acc => factor_result[:acc], :int => factor_result[:int], :expr => tail}
+        new_exp = %{:acc => factor_result[:acc], :int => factor_result[:int], :expr => tail, :error => factor_result[:error]}
         rhs_exp = factor(new_exp)
         #IO.puts("find rhs")
         rhs = rhs_exp[:int]
@@ -140,9 +145,15 @@ defmodule Calc do
        if op == "*" do
         #IO.puts("rhs in *")
         #IO.inspect(rhs)
-          calculate_result = %{:acc => lhs * rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
+          calculate_result = %{:acc => lhs * rhs, :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => rhs_exp[:error]}
        else
-          calculate_result = %{:acc => div(lhs, rhs), :int => rhs_exp[:int], :expr => rhs_exp[:expr]}
+          if rhs == 0 do
+            rhs = 1
+            error_flag = "Error: rhs of div opperation can not be 0"
+          else
+            error_flag = rhs_exp[:error]
+          end
+          calculate_result = %{:acc => div(lhs, rhs), :int => rhs_exp[:int], :expr => rhs_exp[:expr], :error => error_flag}
        end
        #IO.puts("111")
        #IO.puts(calculate_result[:expr])
@@ -163,7 +174,7 @@ defmodule Calc do
       tail = Enum.take(exp[:expr], 1 - Enum.count(exp[:expr]))
 
         if head == "(" do
-          new_exp = %{:acc => nil, :int => nil, :expr => tail}
+          new_exp = %{:acc => nil, :int => nil, :expr => tail, :error => exp[:error]}
           temp_result = add_minus(new_exp)
           if temp_result[:expr] == nil do
             tail = []
@@ -182,24 +193,44 @@ defmodule Calc do
           #IO.inspect(exp[:int])
 
           if exp[:acc] == nil do
-            %{:acc => temp_result[:acc], :int => temp_result[:acc], :expr => tail}
+            %{:acc => temp_result[:acc], :int => temp_result[:acc], :expr => tail, :error => temp_result[:error]}
           else
-            %{:acc => exp[:acc], :int => temp_result[:acc], :expr => tail}
+            %{:acc => exp[:acc], :int => temp_result[:acc], :expr => tail, :error => temp_result[:error]}
           end
           
         else
+          
+          if is_integer?(head) do
+            num = String.to_integer(head)
+            error_flag = exp[:error]
+          else
+            num = 1
+            error_flag = "Error: opperator error"
+          end
+
           if exp[:acc] == nil do
             #IO.puts(":acc nil " )
-            %{:acc => String.to_integer(head), :int => String.to_integer(head), :expr => tail}
+            %{:acc => num, :int => num, :expr => tail, :error => error_flag}
           else
             #IO.puts(":acc: " )
             #IO.puts(Integer.to_string(exp[:acc]))
             #IO.puts(":int: " )
             #IO.puts(head)
-            %{:acc => exp[:acc], :int => String.to_integer(head), :expr => tail}
+            %{:acc => exp[:acc], :int => num, :expr => tail, :error => error_flag}
           end
         end
     end
+  end
+
+  def is_integer?(arg) do
+    
+    list =  String.splitter(arg, "", trim: true)
+    ans = Enum.all?(list, fn(x) -> is_digit?(x) end)
+    #Enum.all?(list, fn(x) -> is_digit?(x) end)
+  end
+
+  def is_digit?(arg) do
+    Enum.any?(["0","1","2","3","4","5","6","7","8","9"], fn(x) -> x == arg end)
   end
 
 end
