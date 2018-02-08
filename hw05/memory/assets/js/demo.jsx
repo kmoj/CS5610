@@ -78,64 +78,12 @@ class Game extends React.Component {
                         this.channel.push("unDisable", {index: i})
                                     .receive("ok", this.gotView.bind(this));},1000);
 
-        // const corrects = this.state.corrects.slice();
-
-        // if(this.state.letters[i] === this.state.letters[this.state.lastClicked] && i !==this.state.lastClicked) {
-        //     corrects[i] = true;
-        //     corrects[this.state.lastClicked] = true;
-        //     this.setState({
-        //         letters: this.state.letters,
-        //         lastClicked: i,
-        //         isDisabled: this.state.isDisabled,
-        //         isClicked: this.state.isClicked,
-        //         corrects: corrects,
-        //         count: 2,
-        //         scores: this.state.scores + 10,
-        //     });
-        //
-        // } else {
-        //     let clicked = this.state.isClicked.slice();
-        //     clicked[i] = true;
-        //     this.setState({
-        //         letters: this.state.letters,
-        //         lastClicked: i,
-        //         isDisabled: true,
-        //         isClicked: clicked,
-        //         correct: this.state.correct,
-        //         count: 2,
-        //         scores: this.state.scores - 1,
-        //     });
-        //
-        //     setTimeout(()=>{
-        //         clicked = Array(16).fill(false);
-        //         this.setState({
-        //             letters: this.state.letters,
-        //             lastClicked: i,
-        //             isDisabled: false,
-        //             isClicked: clicked,
-        //             correct: this.state.correct,
-        //             count: 2,
-        //             scores: this.state.scores,
-        //         });
-        //     },1000);
-        // }
     }
 
     handleRestartClick() {
 
         this.channel.push("restart")
                     .receive("ok", this.gotView.bind(this));
-
-        // let shuffledLetters = this.state.letters;
-        // shuffledLetters.sort(()=>{return Math.random()-0.5;});
-        // this.setState({
-        //     letters: shuffledLetters,
-        //     lastClicked: null,
-        //     isDisabled: this.state.isDisabled,
-        //     isClicked: this.state.isClicked,
-        //     corrects: Array(16).fill(false),
-        //     scores: 0,
-        // });
     }
 
     renderTile(i) {

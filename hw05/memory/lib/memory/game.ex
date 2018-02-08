@@ -34,7 +34,9 @@ defmodule Memory.Game do
     if lastClicked == nil do
       lastClicked = 999
     end
-    if Enum.at(game.letters, i) == Enum.at(game.letters, lastClicked) && i != game.lastClicked && game.count >0 do
+    if Enum.at(game.letters, i) == Enum.at(game.letters, lastClicked)
+       && i != game.lastClicked
+       && game.count >0 do
       new_corrects = List.replace_at(game.corrects, i, true)
       new_corrects = List.replace_at(new_corrects, lastClicked, true)
       %{
