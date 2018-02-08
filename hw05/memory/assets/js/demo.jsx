@@ -27,8 +27,7 @@ class Tile extends React.Component {
     render() {
         return (
             <button className= {this.props.correctness ? "tile-correct": this.props.isClicked? "tile2":"tile"}
-                    onClick={() => this.props.onClick()}
-                    disabled={this.props.isDisabled}>
+                    onClick={() => this.props.onClick()}>
                 {this.props.value}
             </button>
         )

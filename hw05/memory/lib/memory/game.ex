@@ -73,7 +73,12 @@ defmodule Memory.Game do
   end
 
   def undisable(game, i) do
+
     new_clicked = List.duplicate(false, 16)
+    if game.count > 0 do
+      new_clicked  = List.replace_at(new_clicked, i, true)
+    end
+
     %{
       letters: game.letters,
       lastClicked: i,
