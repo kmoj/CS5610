@@ -10,7 +10,7 @@
 </div>
 
 
-<script language="javascript">
+<script>
 function toGames() {
     var gameName;
 
