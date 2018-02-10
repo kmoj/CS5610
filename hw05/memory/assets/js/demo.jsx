@@ -137,7 +137,7 @@ class Game extends React.Component {
                     </table>
                 </div>
                 <div>{this.renderRestartButton()}</div>
-                <p>Rules: every click on the tile will deduct 1 points from the score.<br/>
+                <p>Scores calculation: every click on the tile will deduct 1 point from the total score.<br/>
                     Find a match will get 10 points.</p>
 
             </div>
