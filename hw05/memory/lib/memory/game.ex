@@ -90,8 +90,16 @@ defmodule Memory.Game do
     }
   end
 
-  def restart do
-
+  def reload(game) do
+    %{
+      letters: game.letters,
+      lastClicked: game.lastClicked,
+      isDisabled: false,
+      isClicked: game.isClicked,
+      corrects:  game.corrects,
+      count: game.count,
+      scores: game.scores,
+    }
   end
 
 end

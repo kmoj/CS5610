@@ -26,8 +26,9 @@ class Tile extends React.Component {
 
     render() {
         return (
-            <button className= {this.props.correctness ? "tile-correct": this.props.isClicked? "tile2":"tile"}
-                    onClick={() => this.props.onClick()}>
+            <button className = {this.props.correctness ? "tile-correct": this.props.isClicked? "tile2":"tile"}
+                    disabled = {this.props.isDisabled}
+                    onClick ={() => this.props.onClick()}>
                 {this.props.value}
             </button>
         )
@@ -75,13 +76,13 @@ class Game extends React.Component {
                     .receive("ok", this.gotView.bind(this));
         setTimeout(()=>{
                         this.channel.push("unDisable", {index: i})
-                                    .receive("ok", this.gotView.bind(this));},1000);
+                                    .receive("ok", this.gotView.bind(this));},750);
 
     }
 
     handleRestartClick() {
 
-        this.channel.push("restart")
+        this.channel.push("restart", {index: 1})
                     .receive("ok", this.gotView.bind(this));
     }
 
