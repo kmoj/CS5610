@@ -29,7 +29,6 @@ defmodule TaskTrackerWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/mytasks", PageController, :mytasks
     get "/edit_form", PageController, :edit_form
 
     resources "/users", UserController

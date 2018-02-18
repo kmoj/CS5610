@@ -8,9 +8,4 @@ defmodule TaskTrackerWeb.PageController do
     render conn, "index.html"
   end
 
-  def mytasks(conn, _params) do
-    tasks = TaskTracker.Job.list_tasks()
-    changeset = Job.change_task(%Task{})
-    render conn, "mytasks.html", tasks: tasks, changeset: changeset
-  end
 end
