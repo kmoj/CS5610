@@ -1,0 +1,37 @@
+<h1>HI</h1>
+
+<%= Enum.map @tasks, fn task -> %>
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= task.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= task.description %>
+  </li>
+
+  <li>
+    <strong>Assigned to:</strong>
+    <%= task.assigned_to %>
+  </li>
+
+  <li>
+    <strong>Time:</strong>
+    <%= task.time %>
+  </li>
+
+  <li>
+    <strong>Complete:</strong>
+    <%= task.complete %>
+  </li>
+
+  <li>
+    <strong>Assigned by:</strong>
+    <%= task.user.name %>
+  </li>
+
+</ul>
+ <% end %>
