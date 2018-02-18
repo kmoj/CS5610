@@ -18,7 +18,7 @@
   </li>
 
   <li>
-    <strong>Time:</strong>
+    <strong>Time(mins):</strong>
     <%= @task.time %>
   </li>
 
@@ -37,4 +37,4 @@
 <%= if !@task.complete do %>
 <span><%= link "Edit", to: task_path(@conn, :edit, @task) %></span>
 <% end %>
-<span><%= link "Back", to: page_path(@conn, :mytasks) %></span>
+<span><%= link "Back", to: task_path(@conn, :index) %></span>

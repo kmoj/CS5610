@@ -19,7 +19,7 @@ defmodule TaskTracker.Job do
   """
   def list_tasks do
     query = from t in Task,
-                 order_by: [desc: t.inserted_at]
+                 order_by: [asc: t.complete, desc: t.updated_at]
     Repo.all(query)
     |> Repo.preload(:user)
   end
