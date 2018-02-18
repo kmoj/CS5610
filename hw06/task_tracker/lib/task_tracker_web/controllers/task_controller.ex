@@ -3,6 +3,8 @@ defmodule TaskTrackerWeb.TaskController do
 
   alias TaskTracker.Job
   alias TaskTracker.Job.Task
+  alias TaskTracker.Accounts
+  alias TaskTracker.Accounts.User
 
   def index(conn, _params) do
     tasks = Job.list_tasks()
@@ -39,14 +41,36 @@ defmodule TaskTrackerWeb.TaskController do
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Job.get_task!(id)
 
-    case Job.update_task(task, task_params) do
-      {:ok, task} ->
-        conn
-        |> put_flash(:info, "Task updated successfully.")
-        |> redirect(to: task_path(conn, :show, task))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", task: task, changeset: changeset)
+    assigned_to = task_params["assigned_to"]
+    time = String.to_integer(task_params["time"])
+    flag = false
+    error_msg = nil
+    if Accounts.get_user_by_name(assigned_to) do
+
+      if rem(time, 15) === 0 do
+          flag = true
+      else
+          error_msg = "time should be an increment of 15"
+      end
+    else
+      error_msg = "user not found"
     end
+
+    if flag do
+      case Job.update_task(task, task_params) do
+        {:ok, task} ->
+          conn
+          |> put_flash(:info, "Task updated successfully.")
+          |> redirect(to: task_path(conn, :show, task))
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", task: task, changeset: changeset)
+      end
+    else
+      conn
+      |> put_flash(:error, "Error: #{error_msg}")
+      |> redirect(to: task_path(conn, :edit, task))
+    end
+
   end
 
   def delete(conn, %{"id" => id}) do
