@@ -12,25 +12,23 @@
         </div>
     </div>
     <div class="row" style="width:800px;">
-        <div class="col-3">
+        <div class="form-group">
             <%= label f, :title, class: "control-label" %>
             <%= text_input f, :title, class: "form-control" %>
             <%= error_tag f, :title %>
         </div>
 
-        <div class="col-7">
+        <div class="form-group">
             <%= label f, :description, class: "control-label" %>
             <%= textarea f, :description, class: "form-control" %>
             <%= error_tag f, :description %>
         </div>
-        <div class="col-3">
+        <div class="form-group">
             <%= label f, :assigned_to, class: "control-label" %>
             <%= text_input f, :assigned_to, class: "form-control" %>
             <%= error_tag f, :assigned_to %>
         </div>
     </div>
-
-    <!--
       <div class="form-group">
         <%= label f, :time, class: "control-label" %>
         <%= number_input f, :time, class: "form-control" %>
@@ -42,7 +40,6 @@
         <%= checkbox f, :complete, class: "checkbox" %>
         <%= error_tag f, :complete %>
       </div>
-    -->
     <div class="row" style="padding-top: 20px;">
         <div class="col">
             <%= submit "Submit", class: "btn btn-primary" %>

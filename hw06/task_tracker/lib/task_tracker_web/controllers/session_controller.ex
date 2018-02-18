@@ -13,7 +13,7 @@ defmodule TaskTrackerWeb.SessionController do
       conn
       |> put_session(:user_id, user.id)
       |> put_flash(:info, "Hi, #{user.name}")
-      |> redirect(to: task_path(conn, :index))
+      |> redirect(to: page_path(conn, :mytasks))
     else
       conn
       |> put_flash(:error, "Email not found")

@@ -30,6 +30,7 @@ defmodule TaskTrackerWeb.Router do
 
     get "/", PageController, :index
     get "/mytasks", PageController, :mytasks
+    get "/edit_form", PageController, :edit_form
 
     resources "/users", UserController
     resources "/tasks", TaskController
