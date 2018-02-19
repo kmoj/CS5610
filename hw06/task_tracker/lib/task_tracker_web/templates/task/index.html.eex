@@ -16,9 +16,24 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>Tasks to Me</h2>
 
-        <table class="table">
+        <h2>Tasks Assigned To Me</h2>
+
+        <div class="row">
+            <div class="col">
+                <p> Finished:
+                   <%= Enum.count(@tasks, fn(x) -> x.complete && x.assigned_to == @current_user.name end)%>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                   Working on:
+                   <%= Enum.count(@tasks, fn(x) -> !x.complete && x.assigned_to == @current_user.name end)%>
+                </p>
+            </div>
+        </div>
+
+        <table class="table" style="margin:auto;">
           <thead>
             <tr>
               <th>Title</th>
@@ -38,7 +53,7 @@
               <td><%= task.time %></td>
               <td >
               <%= if task.complete do %>
-                <span class="glyphicon-circle-arrow-up" style="height:30px;width:20px;"></span>
+                <span class="glyphicon-alert" style="height:30px;width:20px;"></span>
               <% else %>
                 <strong style="color:#ff2e66">X</strong>
               <% end %>
@@ -60,9 +75,24 @@
    </div>
 
    <div class="col-md-6">
-        <h2>Tasks Assigned</h2>
 
-        <table class="table">
+        <h2>Tasks Assigned By Me</h2>
+
+        <div class="row">
+            <div class="col">
+                <p> Finished:
+                   <%= Enum.count(@tasks, fn(x) -> x.complete && x.user.id == @current_user.id end)%>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                   Working on:
+                   <%= Enum.count(@tasks, fn(x) -> !x.complete && x.user.id == @current_user.id end)%>
+                </p>
+            </div>
+        </div>
+
+        <table class="table" style="margin:auto;">
           <thead>
             <tr>
               <th>Title</th>
@@ -82,7 +112,7 @@
               <td><%= task.time %></td>
               <td >
               <%= if task.complete do %>
-                <span class="glyphicon-circle-arrow-up" style="height:30px;width:20px;"></span>
+                <span class="glyphicon-alert" style="height:30px;width:20px;"></span>
               <% else %>
                 <strong style="color:#ff2e66">X</strong>
               <% end %>
