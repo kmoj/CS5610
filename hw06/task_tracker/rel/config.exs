@@ -30,14 +30,13 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"TNGHtNDb=9z.|5S[BcY.YpT1HvHuahPXy3_spzpih^nPlUeaQjZ.~y8/Y1mV`SHr"
+  set cookie: :"TR]1Rw.R|7as&U=g])d*!^]T]G?xleb/vuS)C:PojD/2/lwLtGLO=AnSz,W?)A7c"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt"
-#  set vm_args: "rel/vm.args"
+  set cookie: :"qTGy%$231kolul2avT=~({GUsE5yx7xpeAM1O_ibrS3_g@m6)pPRGiz&GSpwjBsI"
 end
 
 # You may define one or more releases in this file.
@@ -50,7 +49,6 @@ release :task_tracker do
   set applications: [
     :runtime_tools
   ]
-  set cookie: :"jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt"
   set vm_args: "rel/vm.args"
 end
 

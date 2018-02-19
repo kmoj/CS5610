@@ -16,7 +16,7 @@ use Mix.Config
 config :task_tracker, TaskTrackerWeb.Endpoint,
   server: true,
   load_from_system_env: true,
-  #url: [host: "example.com", port: 80],
+  url: [host: "example.com", port: 80],
   #check_origin: false,
   secret_key_base: "jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt",
   cache_static_manifest: "priv/static/cache_manifest.json"
