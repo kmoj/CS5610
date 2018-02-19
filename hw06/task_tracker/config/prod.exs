@@ -16,9 +16,9 @@ use Mix.Config
 config :task_tracker, TaskTrackerWeb.Endpoint,
   server: true,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
+  #url: [host: "example.com", port: 80],
   #check_origin: false,
-  secret_key_base: "jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt",
+  #secret_key_base: "jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -64,15 +64,15 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-#import_config "prod.secret.exs"
+import_config "prod.secret.exs"
 
 #config :task_tracker, TaskTrackerWeb.Endpoint,
 #  secret_key_base: "jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt"
 
 # Configure your database
-config :task_tracker, TaskTracker.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "task_tracker",
-  password: "task123",
-  database: "task_tracker_prod",
-  pool_size: 15
+#config :task_tracker, TaskTracker.Repo,
+#  adapter: Ecto.Adapters.Postgres,
+#  username: "task_tracker",
+#  password: "task123",
+#  database: "task_tracker_prod",
+#  pool_size: 15

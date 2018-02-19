@@ -15,13 +15,22 @@ defmodule TaskTrackerWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    case Accounts.create_user(user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "User created successfully.")
-        |> redirect(to: user_path(conn, :show, user))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+    name = user_params["name"]
+    flag = false
+    error_msg = nil
+    if ! Accounts.get_user_by_name(name) do
+      case Accounts.create_user(user_params) do
+        {:ok, user} ->
+          conn
+          |> put_flash(:info, "User created successfully.")
+          |> redirect(to: user_path(conn, :show, user))
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
+    else
+      conn
+      |> put_flash(:error, "Error: the name #{name} already exists")
+      |> redirect(to: user_path(conn, :new))
     end
   end
 

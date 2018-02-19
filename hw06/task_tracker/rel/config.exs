@@ -37,6 +37,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"qTGy%$231kolul2avT=~({GUsE5yx7xpeAM1O_ibrS3_g@m6)pPRGiz&GSpwjBsI"
+  set vm_args: "rel/vm.args"
 end
 
 # You may define one or more releases in this file.
@@ -49,6 +50,7 @@ release :task_tracker do
   set applications: [
     :runtime_tools
   ]
+#  set cookie: :"jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt"
   set vm_args: "rel/vm.args"
 end
 
