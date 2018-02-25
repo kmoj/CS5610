@@ -1,3 +1,8 @@
+<script>
+    window.manage_path = "<%= manage_path(@conn, :index)%>";
+    window.current_user_id = "<%= @current_user.id %>";
+</script>
+
 <div class="container" >
     <div class="row">
         <div class="col">
@@ -14,62 +19,103 @@
 
 
 <div class="row">
-    <div class="col-md-6">
-        <h2>My Managers</h2>
+    <div class="col-md-5">
+        <h2>All Users</h2>
             <table class="table">
               <thead>
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Manager</th>
+                  <th> </th>
 
                   <th></th>
                 </tr>
               </thead>
               <tbody>
             <%= for user <- @users do %>
+            <%= if user.id != @current_user.id do %>
                 <tr>
                   <td><%= user.name %></td>
                   <td><%= user.email %></td>
-                  <td><%= user.manager %></td>
-
-                  <td class="text-right">
-                    <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
-                    <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
+                  <%=  if !Enum.member?(@manager_users, user) do %>
+                  <td><button class="manage-button btn btn-primary"
+                              data-user-id = "<%= user.id %>"
+                              data-manage = "<%= @managees[user.id] %>">
+                        Manage
+                      </button>
                   </td>
+                  <% else %>
+                  <td><button class="manage-button btn btn-primary"
+                              data-user-id = "<%= user.id %>"
+                              data-manage = ""
+                              disabled= "disabled" >
+                       Manage
+                      </button>
+                  </td>
+                  <% end %>
                 </tr>
+            <% end %>
             <% end %>
               </tbody>
             </table>
    </div>
-
     <div class="col-md-6">
-        <h2>My Task Takers</h2>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Manager</th>
+        <div class="row">
+            <h2>My Managers</h2>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Manager</th>
 
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-            <%= for user <- @users do %>
-                <tr>
-                  <td><%= user.name %></td>
-                  <td><%= user.email %></td>
-                  <td><%= user.manager %></td>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                <%= for manager_user <- @manager_users do %>
+                    <tr>
+                      <td><%= manager_user.name %></td>
+                      <td><%= manager_user.email %></td>
+                      <td><%= manager_user.manager %></td>
 
-                  <td class="text-right">
-                    <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
-                    <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
-                  </td>
-                </tr>
-            <% end %>
-              </tbody>
-            </table>
+                      <td class="text-right">
+                        <span><%= link "Show", to: user_path(@conn, :show, manager_user), class: "btn btn-default btn-xs" %></span>
+                        <span><%= link "Edit", to: user_path(@conn, :edit, manager_user), class: "btn btn-default btn-xs" %></span>
+                      </td>
+                    </tr>
+                <% end %>
+                  </tbody>
+                </table>
+       </div>
+       <div class="row">
+            <h2>My Task Takers</h2>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Manager</th>
+
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                <%= for managee_user <- @managee_users do %>
+                    <tr>
+                      <td><%= managee_user.name %></td>
+                      <td><%= managee_user.email %></td>
+                      <td><%= managee_user.manager %></td>
+
+                      <td class="text-right">
+                        <span><%= link "Show", to: user_path(@conn, :show, managee_user), class: "btn btn-default btn-xs" %></span>
+                        <span><%= link "Edit", to: user_path(@conn, :edit, managee_user), class: "btn btn-default btn-xs" %></span>
+                      </td>
+                    </tr>
+                <% end %>
+                  </tbody>
+                </table>
+        </div>
     </div>
 </div>
 </div>

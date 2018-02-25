@@ -12201,6 +12201,96 @@ require.register("js/app.js", function(exports, require, module) {
 
 require("phoenix_html");
 
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+// import socket from "./socket"
+
+// Brunch automatically concatenates all files in your
+// watched paths. Those paths can be configured at
+// config.paths.watched in "brunch-config.js".
+//
+// However, those files will only be executed if
+// explicitly imported. The only exception are files
+// in vendor, which are never wrapped in imports and
+// therefore are always executed.
+
+// Import dependencies
+//
+// If you no longer want to use a dependency, remember
+// to also remove its path from "config.paths.watched".
+function init_manages() {
+
+    if (!(0, _jquery2.default)(".manage-button")) {
+        return;
+    }
+
+    (0, _jquery2.default)('.manage-button').click(manage_click);
+    update_button();
+}
+
+function manage_click(ev) {
+    var btn = (0, _jquery2.default)(ev.target);
+    var manage_id = btn.data('manage');
+    var user_id = btn.data('user-id');
+
+    if (manage_id == "") {
+        manage_user(user_id);
+    } else {}
+}
+
+function manage_user(user_id) {
+    var text = JSON.stringify({
+        manage: {
+            manager_id: current_user_id,
+            managee_id: parseInt(user_id)
+        }
+
+    });
+
+    _jquery2.default.ajax(manage_path, {
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: text,
+        error: console.log(text),
+        success: function success(resp) {
+            set_button(user_id, resp.data.id);
+        }
+    });
+}
+
+function set_button(user_id, manage_id) {
+    (0, _jquery2.default)('.manage-button').each(function (_, btn) {
+        if (user_id == (0, _jquery2.default)(btn).data('user-id')) {
+            (0, _jquery2.default)(btn).data('manage', manage_id);
+        }
+    });
+
+    update_button();
+    location.reload();
+}
+
+function update_button() {
+    (0, _jquery2.default)('.manage-button').each(function (_, btn) {
+        if ((0, _jquery2.default)(btn).data('manage') == "") {
+            (0, _jquery2.default)(btn).text("Manage");
+        } else {
+            (0, _jquery2.default)(btn).text("Unmanage");
+        }
+    });
+}
+
+(0, _jquery2.default)(init_manages);
+
 });
 
 require.register("js/socket.js", function(exports, require, module) {

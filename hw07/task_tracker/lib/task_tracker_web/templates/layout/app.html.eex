@@ -27,7 +27,9 @@
                     </h5>
                 </div>
             <% else %>
+            <div class="col-3 offset-9">
                 <h5>Not logged in | <%= link "Register", to: user_path(@conn, :new) %></h5>
+            </div>
 
             <% end %>
         </div>

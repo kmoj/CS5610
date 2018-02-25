@@ -11,7 +11,8 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
+import $ from "jquery";
 
 // Import local files
 //
@@ -19,3 +20,68 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+function init_manages() {
+
+    if(!$(".manage-button")) {
+        return;
+    }
+
+    $('.manage-button').click(manage_click);
+    update_button();
+}
+
+function manage_click(ev) {
+    let btn = $(ev.target);
+    let manage_id = btn.data('manage');
+    let user_id = btn.data('user-id');
+
+    if(manage_id == "") {
+        manage_user(user_id);
+    } else {
+
+    }
+}
+
+function manage_user(user_id) {
+    let text = JSON.stringify({
+        manage: {
+            manager_id: current_user_id,
+            managee_id: parseInt(user_id),
+        }
+
+    });
+
+    $.ajax(manage_path, {
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: text,
+        error: console.log(text),
+        success: (resp) => {set_button(user_id, resp.data.id);},
+    });
+}
+
+function set_button(user_id, manage_id) {
+    $('.manage-button').each( (_, btn) => {
+        if (user_id == $(btn).data('user-id')) {
+            $(btn).data('manage', manage_id);
+        }
+    });
+
+    update_button();
+    location.reload();
+}
+
+function update_button() {
+    $('.manage-button').each( (_, btn) => {
+        if($(btn).data('manage') == "") {
+            $(btn).text("Manage");
+        } else {
+            $(btn).text("Unmanage");
+        }
+    });
+
+}
+
+$(init_manages);
