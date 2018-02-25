@@ -1,0 +1,75 @@
+<div class="container" >
+    <div class="row">
+        <div class="col">
+            <h1>
+                New Task
+            </h1><span><h5>Assigned as: <%= @current_user.name %></h5></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <%= render TaskTrackerWeb.TaskView, "form.html", Map.put(assigns, :action, task_path(@conn, :create)) %>
+        </div>
+    </div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>My Managers</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Manager</th>
+
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+            <%= for user <- @users do %>
+                <tr>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= user.manager %></td>
+
+                  <td class="text-right">
+                    <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
+                    <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
+                  </td>
+                </tr>
+            <% end %>
+              </tbody>
+            </table>
+   </div>
+
+    <div class="col-md-6">
+        <h2>My Task Takers</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Manager</th>
+
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+            <%= for user <- @users do %>
+                <tr>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= user.manager %></td>
+
+                  <td class="text-right">
+                    <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
+                    <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
+                  </td>
+                </tr>
+            <% end %>
+              </tbody>
+            </table>
+    </div>
+</div>
+</div>
