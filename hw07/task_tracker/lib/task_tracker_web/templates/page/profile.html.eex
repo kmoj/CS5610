@@ -15,6 +15,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Manage Level</th>
                   <th> </th>
 
                   <th></th>
@@ -26,6 +27,7 @@
                 <tr>
                   <td><%= user.name %></td>
                   <td><%= user.email %></td>
+                  <td><%= user.manage_level %></td>
                   <%=  if Enum.member?(@manager_users, user) || @current_user.manage_level < user.manage_level do %>
                   <td><button class="manage-button btn btn-primary"
                               data-user-id = "<%= user.id %>"
@@ -69,7 +71,7 @@
                       <td><%= manager_user.manage_level %></td>
 
                       <td class="text-right">
-                        <span><%= link "Show", to: user_path(@conn, :show, manager_user), class: "btn btn-default btn-xs" %></span>
+                        <span><%= link "Show", to: user_path(@conn, :show, manager_user), class: "btn btn-primary btn-xs" %></span>
                       </td>
                     </tr>
                 <% end %>

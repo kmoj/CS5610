@@ -12214,6 +12214,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import socket from "./socket"
 
+// function init_timers() {
+//
+//     if(!$(".manage-button")) {
+//         return;
+//     }
+//
+//     $('.manage-button').click(manage_click);
+//     update_button();
+// }
+
+
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
@@ -12229,12 +12240,253 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // to also remove its path from "config.paths.watched".
 function init_manages() {
 
-    if (!(0, _jquery2.default)(".manage-button")) {
-        return;
+    if ((0, _jquery2.default)(".manage-button")) {
+        (0, _jquery2.default)('.manage-button').click(manage_click);
+        update_button();
     }
 
-    (0, _jquery2.default)('.manage-button').click(manage_click);
-    update_button();
+    if ((0, _jquery2.default)(".timer-button")) {
+        (0, _jquery2.default)('.timer-button').click(timer_click);
+    }
+
+    if ((0, _jquery2.default)(".task-submit-button")) {
+        (0, _jquery2.default)('.task-submit-button').click(task_submit_click);
+    }
+
+    if ((0, _jquery2.default)(".timeblock-delete-button")) {
+        (0, _jquery2.default)('.timeblock-delete-button').click(timeblock_delete_click);
+    }
+
+    if ((0, _jquery2.default)(".timeblock-edit-button")) {
+        (0, _jquery2.default)('.timeblock-edit-button').click(timeblock_edit_click);
+    }
+
+    if ((0, _jquery2.default)(".timeblock-save-button")) {
+        (0, _jquery2.default)('.timeblock-save-button').click(timeblock_save_click);
+    }
+
+    return;
+}
+
+function timeblock_save_click(ev) {
+
+    var btn = (0, _jquery2.default)(ev.target);
+    // let saveBtn = $(".timeblock-save-button");
+    // let deleteBtn = $(".timeblock-delete-button");
+    var startInput = (0, _jquery2.default)(".timeblock-start-input");
+    var endInput = (0, _jquery2.default)(".timeblock-end-input");
+    var timeblockId = (0, _jquery2.default)(btn).data('timeblock-id');
+    var taskId = (0, _jquery2.default)(btn).data('task-id');
+    var newStartTime = "";
+    var newEndTime = "";
+
+    (0, _jquery2.default)(".timeblock-edit-button").each(function () {
+        var btn = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(btn).css("display", "");
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-delete-button").each(function () {
+        var btn = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(btn).css("display", "");
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-start-input").each(function () {
+        var input = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(input).css("pointer-events", "none");
+            newStartTime = (0, _jquery2.default)(input).val();
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-end-input").each(function () {
+        var input = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(input).css("pointer-events", "none");
+            newEndTime = (0, _jquery2.default)(input).val();
+        }
+    });
+
+    var text = JSON.stringify({
+        timeblock: {
+            end: newEndTime,
+            start: newStartTime,
+            task_id: taskId
+        }
+
+    });
+
+    _jquery2.default.ajax(timeblocks_path + "/" + timeblockId, {
+        method: "PUT",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: text,
+        error: console.log(text),
+        success: function success(resp) {
+            console.log(resp);
+        }
+    });
+
+    (0, _jquery2.default)(btn).css("display", "none");
+}
+
+function timeblock_edit_click(ev) {
+
+    var btn = (0, _jquery2.default)(ev.target);
+    var timeblockId = (0, _jquery2.default)(btn).data('timeblock-id');
+
+    (0, _jquery2.default)(".timeblock-save-button").each(function () {
+        var btn = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(btn).css("display", "");
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-delete-button").each(function () {
+        var btn = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(btn).css("display", "none");
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-start-input").each(function () {
+        var input = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(input).css("pointer-events", "");
+        }
+    });
+
+    (0, _jquery2.default)(".timeblock-end-input").each(function () {
+        var input = (0, _jquery2.default)(this);
+
+        if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
+            (0, _jquery2.default)(input).css("pointer-events", "");
+        }
+    });
+
+    (0, _jquery2.default)(btn).css("display", "none");
+}
+
+function timeblock_delete_click(ev) {
+
+    var btn = (0, _jquery2.default)(ev.target);
+    var timeblock_id = btn.data('timeblock-id');
+
+    _jquery2.default.ajax(timeblocks_path + "/" + timeblock_id, {
+        method: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: "{}",
+        success: function success(_resp) {
+            location.reload();
+        }
+    });
+}
+
+function task_submit_click(ev) {
+    var btn = (0, _jquery2.default)(ev.target);
+    var startInput = (0, _jquery2.default)(".start-time-input");
+    var endInput = (0, _jquery2.default)(".end-time-input");
+    var startTime = (0, _jquery2.default)(startInput).val();
+    var endTime = (0, _jquery2.default)(endInput).val();
+    var taskId = btn.data('task-id');
+
+    var text = JSON.stringify({
+        timeblock: {
+            end: endTime,
+            start: startTime,
+            task_id: parseInt(taskId)
+        }
+
+    });
+
+    _jquery2.default.ajax(timeblocks_path, {
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: text,
+        error: console.log(text),
+        success: function success(resp) {
+            console.log(resp);
+        }
+    });
+}
+
+function timer_click(ev) {
+    var btn = (0, _jquery2.default)(ev.target);
+    var startInput = (0, _jquery2.default)(".start-time-input");
+    var endInput = (0, _jquery2.default)(".end-time-input");
+    var timeInput = (0, _jquery2.default)(".time-input");
+    var action = btn.data('action');
+    var date = new Date();
+    var dateTimeString = formatDateTime(date);
+
+    if (action == "start") {
+
+        (0, _jquery2.default)(startInput).val(dateTimeString);
+        (0, _jquery2.default)(endInput).val("");
+        (0, _jquery2.default)(btn).text("End");
+        (0, _jquery2.default)(btn).data('action', "end");
+    } else if (action == "end") {
+
+        (0, _jquery2.default)(endInput).val(dateTimeString);
+        (0, _jquery2.default)(btn).text("Start");
+        (0, _jquery2.default)(btn).data('action', "start");
+
+        var startTime = (0, _jquery2.default)(startInput).val();
+
+        var t1 = startTime.replace(/\-/g, "/");
+        var date1 = new Date(t1);
+
+        var workingTime = parseInt((date - date1) / 1000 / 60);
+
+        (0, _jquery2.default)(timeInput).val(workingTime);
+    }
+}
+
+function formatDateTime(date) {
+
+    var dateSeparator = "-";
+    var timeSeparator = ":";
+    var strmonth = date.getMonth() + 1;
+    var strDate = date.getDate();
+    var strHH = date.getHours();
+    var strMM = date.getMinutes();
+    var strSS = date.getSeconds();
+
+    if (strmonth >= 1 && strmonth <= 9) {
+        strmonth = "0" + strmonth;
+    }
+
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+
+    if (strHH >= 0 && strHH <= 9) {
+        strHH = "0" + strHH;
+    }
+
+    if (strMM >= 0 && strMM <= 9) {
+        strMM = "0" + strMM;
+    }
+
+    if (strSS >= 0 && strSS <= 9) {
+        strSS = "0" + strSS;
+    }
+
+    var currentdate = date.getFullYear() + dateSeparator + strmonth + dateSeparator + strDate + " " + strHH + timeSeparator + strMM + timeSeparator + strSS;
+
+    return currentdate;
 }
 
 function manage_click(ev) {
@@ -12290,7 +12542,7 @@ function set_button(user_id, manage_id) {
         }
     });
 
-    update_button();
+    //update_button();
     location.reload();
 }
 

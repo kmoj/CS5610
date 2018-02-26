@@ -5,6 +5,7 @@ defmodule TaskTrackerWeb.TaskController do
   alias TaskTracker.Job.Task
   alias TaskTracker.Accounts
   alias TaskTracker.Accounts.User
+  alias TaskTracker.Job.Timeblock
 
   def index(conn, _params) do
     tasks = Job.list_tasks()
@@ -57,7 +58,8 @@ defmodule TaskTrackerWeb.TaskController do
 
   def show(conn, %{"id" => id}) do
     task = Job.get_task!(id)
-    render(conn, "show.html", task: task)
+    time_blocks = Job.get_timeblock_by_task_id(id)
+    render(conn, "show.html", task: task, time_blocks: time_blocks)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -75,16 +77,17 @@ defmodule TaskTrackerWeb.TaskController do
     error_msg = nil
     if Accounts.get_user_by_name(assigned_to) do
 
-      if rem(time, 15) === 0 do
+      if time >= 0 do
           flag = true
       else
-          error_msg = "time should be an increment of 15"
+          error_msg = "invalid time input"
       end
     else
       error_msg = "user not found"
     end
 
     if flag do
+      task_params = Map.update!(task_params, "time", fn(x) -> Integer.to_string(String.to_integer(x) + task.time)  end)
       case Job.update_task(task, task_params) do
         {:ok, task} ->
           conn

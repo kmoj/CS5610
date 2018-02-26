@@ -21,15 +21,270 @@ import $ from "jquery";
 
 // import socket from "./socket"
 
+// function init_timers() {
+//
+//     if(!$(".manage-button")) {
+//         return;
+//     }
+//
+//     $('.manage-button').click(manage_click);
+//     update_button();
+// }
+
+
 function init_manages() {
 
-    if(!$(".manage-button")) {
-        return;
+    if($(".manage-button")) {
+        $('.manage-button').click(manage_click);
+        update_button();
     }
 
-    $('.manage-button').click(manage_click);
-    update_button();
+    if($(".timer-button")) {
+        $('.timer-button').click(timer_click);
+    }
+
+    if($(".task-submit-button")) {
+        $('.task-submit-button').click(task_submit_click);
+    }
+
+    if($(".timeblock-delete-button")) {
+        $('.timeblock-delete-button').click(timeblock_delete_click);
+    }
+
+    if($(".timeblock-edit-button")) {
+        $('.timeblock-edit-button').click(timeblock_edit_click);
+    }
+
+    if($(".timeblock-save-button")) {
+        $('.timeblock-save-button').click(timeblock_save_click);
+    }
+
+    return;
+
 }
+
+ function timeblock_save_click(ev) {
+
+     let btn = $(ev.target);
+     // let saveBtn = $(".timeblock-save-button");
+     // let deleteBtn = $(".timeblock-delete-button");
+     let startInput = $(".timeblock-start-input");
+     let endInput = $(".timeblock-end-input");
+     let timeblockId = $(btn).data('timeblock-id');
+     let taskId = $(btn).data('task-id');
+     let newStartTime = "";
+     let newEndTime = "";
+
+     $(".timeblock-edit-button").each(function() {
+         var btn = $(this);
+
+         if ($(btn).data('timeblock-id') == timeblockId){
+             $(btn).css("display", "");
+         }
+     });
+
+     $(".timeblock-delete-button").each(function() {
+         var btn = $(this);
+
+         if ($(btn).data('timeblock-id') == timeblockId){
+             $(btn).css("display", "");
+         }
+     });
+
+     $(".timeblock-start-input").each(function() {
+         var input = $(this);
+
+         if ($(input).data('timeblock-id') == timeblockId){
+             $(input).css("pointer-events", "none");
+             newStartTime = $(input).val();
+         }
+     });
+
+     $(".timeblock-end-input").each(function() {
+         var input = $(this);
+
+         if ($(input).data('timeblock-id') == timeblockId){
+             $(input).css("pointer-events", "none");
+             newEndTime = $(input).val();
+         }
+     });
+
+
+     let text = JSON.stringify({
+         timeblock: {
+             end: newEndTime,
+             start: newStartTime,
+             task_id: taskId,
+         }
+
+     });
+
+     $.ajax(timeblocks_path + "/" + timeblockId, {
+         method: "PUT",
+         dataType: "json",
+         contentType: "application/json; charset=UTF-8",
+         data: text,
+         error: console.log(text),
+         success: (resp) => {console.log(resp);},
+     });
+
+     $(btn).css("display", "none");
+ }
+
+function timeblock_edit_click(ev) {
+
+    let btn = $(ev.target);
+    let timeblockId = $(btn).data('timeblock-id');
+
+    $(".timeblock-save-button").each(function() {
+        var btn = $(this);
+
+        if ($(btn).data('timeblock-id') == timeblockId){
+            $(btn).css("display", "");
+        }
+    });
+
+    $(".timeblock-delete-button").each(function() {
+        var btn = $(this);
+
+        if ($(btn).data('timeblock-id') == timeblockId){
+            $(btn).css("display", "none");
+        }
+    });
+
+    $(".timeblock-start-input").each(function() {
+        var input = $(this);
+
+        if ($(input).data('timeblock-id') == timeblockId){
+            $(input).css("pointer-events", "");
+        }
+    });
+
+    $(".timeblock-end-input").each(function() {
+        var input = $(this);
+
+        if ($(input).data('timeblock-id') == timeblockId){
+            $(input).css("pointer-events", "");
+        }
+    });
+
+    $(btn).css("display", "none");
+
+}
+
+function timeblock_delete_click(ev) {
+
+    let btn = $(ev.target);
+    let timeblock_id = btn.data('timeblock-id');
+
+    $.ajax(timeblocks_path + "/" + timeblock_id, {
+        method: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: "{}",
+        success: (_resp) => {location.reload();},
+    });
+}
+
+function task_submit_click(ev) {
+    let btn = $(ev.target);
+    let startInput = $(".start-time-input");
+    let endInput = $(".end-time-input");
+    let startTime = $(startInput).val();
+    let endTime = $(endInput).val();
+    let taskId = btn.data('task-id');
+
+    let text = JSON.stringify({
+        timeblock: {
+            end: endTime,
+            start: startTime,
+            task_id: parseInt(taskId),
+        }
+
+    });
+
+    $.ajax(timeblocks_path, {
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: text,
+        error: console.log(text),
+        success: (resp) => {console.log(resp);},
+    });
+
+}
+
+function timer_click(ev) {
+    let btn = $(ev.target);
+    let startInput = $(".start-time-input");
+    let endInput = $(".end-time-input");
+    let timeInput = $(".time-input");
+    let action = btn.data('action');
+    var date = new Date();
+    let dateTimeString = formatDateTime(date);
+
+    if(action == "start") {
+
+        $(startInput).val(dateTimeString);
+        $(endInput).val("");
+        $(btn).text("End");
+        $(btn).data('action', "end");
+
+    } else if (action == "end") {
+
+        $(endInput).val(dateTimeString);
+        $(btn).text("Start");
+        $(btn).data('action', "start");
+
+        let startTime = $(startInput).val();
+
+        var t1 = startTime.replace(/\-/g, "/");
+        var date1 = new Date(t1);
+
+        let workingTime = parseInt((date - date1) / 1000 / 60);
+
+        $(timeInput).val(workingTime);
+    }
+
+}
+
+function formatDateTime(date) {
+
+    let dateSeparator = "-";
+    let timeSeparator = ":";
+    let strmonth = date.getMonth() + 1;
+    let strDate = date.getDate();
+    let strHH = date.getHours();
+    let strMM = date.getMinutes();
+    let strSS = date.getSeconds();
+
+    if (strmonth >= 1 && strmonth <= 9) {
+        strmonth = "0" + strmonth;
+    }
+
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+
+    if (strHH >= 0 && strHH <= 9) {
+        strHH = "0" + strHH;
+    }
+
+    if (strMM >= 0 && strMM <= 9) {
+        strMM = "0" + strMM;
+    }
+
+    if (strSS >= 0 && strSS <= 9) {
+        strSS = "0" + strSS;
+    }
+
+    var currentdate = date.getFullYear() + dateSeparator + strmonth + dateSeparator + strDate +
+                      " " + strHH + timeSeparator + strMM + timeSeparator
+                      + strSS;
+
+    return currentdate;
+}
+
 
 function manage_click(ev) {
     let btn = $(ev.target);
@@ -80,7 +335,7 @@ function set_button(user_id, manage_id) {
         }
     });
 
-    update_button();
+    //update_button();
     location.reload();
 }
 

@@ -33,5 +33,6 @@ defmodule TaskTrackerWeb.Router do
    scope "/api/v1", TaskTrackerWeb do
      pipe_through :api
      resources "/manages", ManageController, expect: [:new, :edit]
+     resources "/timeblocks", TimeblockController, expect: [:new, :edit]
    end
 end
