@@ -1,0 +1,7 @@
+<div class="container">
+    <h2>New Task</h2>
+
+    <%= render "form.html", Map.put(assigns, :action, task_path(@conn, :create)) %>
+
+    <span><%= link "Back", to: page_path(@conn, :profile) %></span>
+</div>
