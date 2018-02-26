@@ -3,7 +3,7 @@
 </script>
 
 <div class="container">
-    <div class="row">
+    <div class="row" style="padding-top: 20px;">
         <div class="col-3">
             <h2>Show Task</h2>
 
@@ -25,11 +25,6 @@
               </li>
 
               <li>
-                <strong>Total Working Time(mins):</strong>
-                <%= @task.time %>
-              </li>
-
-              <li>
                 <strong>Complete:</strong>
                 <%= @task.complete %>
               </li>
@@ -40,17 +35,13 @@
               </li>
 
             </ul>
-
-            <%= if !@task.complete do %>
-            <span><%= link "Edit", to: task_path(@conn, :edit, @task) %></span>
-            <% end %>
-            <span><%= link "Back", to: task_path(@conn, :index) %></span>
         </div>
 
         <div class="col-6">
             <table class="table" style="margin:auto;">
               <thead>
                 <tr>
+                  <th>Index Id</th>
                   <th>Start Time</th>
                   <th>End Time</th>
                 </tr>
@@ -58,6 +49,7 @@
               <tbody>
             <%= for time_block <- @time_blocks do %>
                 <tr>
+                  <td><%= time_block.id %></td>
                   <td><input class="timeblock-start-input form-control"
                              value="<%= time_block.start %>"
                              style="pointer-events: none"
@@ -66,6 +58,7 @@
                              value="<%= time_block.end %>"
                              style="pointer-events: none"
                              data-timeblock-id= "<%= time_block.id %>"></td>
+                  <%= if @task.assigned_to == @current_user.name do %>
                   <td>
                     <span>
                         <button class="timeblock-edit-button btn btn-primary"
@@ -88,10 +81,18 @@
                         </button>
                     </span>
                   </td>
+                  <% end %>
                 </tr>
             <% end %>
               </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="row">
+        <%= if !@task.complete do %>
+        <span><%= link "Update", to: task_path(@conn, :edit, @task), class: "btn btn-primary", style: "margin:10px;"%></span>
+        <% end %>
+        <span><%= link "Back", to: task_path(@conn, :index), class: "btn btn-danger", style: "margin:10px;" %></span>
     </div>
 </div>

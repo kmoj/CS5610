@@ -18,7 +18,9 @@ defmodule TaskTracker.Accounts do
 
   """
   def list_users do
-    Repo.all(User)
+    query = from u in User,
+                 order_by: [asc: u.manage_level]
+    Repo.all(query)
   end
 
   @doc """

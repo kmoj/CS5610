@@ -1,6 +1,6 @@
 <script>
     window.manage_path = "<%= manage_path(@conn, :index)%>";
-    window.current_user_id = "<%= @current_user.id %>";
+    //window.current_user_id = "<%= @current_user.id %>";
 </script>
 
 <div class="container" >
@@ -39,6 +39,7 @@
                   <% else %>
                   <td><button class="manage-button btn btn-primary"
                               data-user-id = "<%= user.id %>"
+                              data-current-user-id = "<%= @current_user.id %>"
                               data-manage = "<%= @managees[user.id] %>">
                       Manage
                       </button>

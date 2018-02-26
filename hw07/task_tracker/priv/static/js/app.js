@@ -12271,10 +12271,6 @@ function init_manages() {
 function timeblock_save_click(ev) {
 
     var btn = (0, _jquery2.default)(ev.target);
-    // let saveBtn = $(".timeblock-save-button");
-    // let deleteBtn = $(".timeblock-delete-button");
-    var startInput = (0, _jquery2.default)(".timeblock-start-input");
-    var endInput = (0, _jquery2.default)(".timeblock-end-input");
     var timeblockId = (0, _jquery2.default)(btn).data('timeblock-id');
     var taskId = (0, _jquery2.default)(btn).data('task-id');
     var newStartTime = "";
@@ -12493,18 +12489,19 @@ function manage_click(ev) {
     var btn = (0, _jquery2.default)(ev.target);
     var manage_id = btn.data('manage');
     var user_id = btn.data('user-id');
+    var current_user_id = btn.data('current-user-id');
 
     if (manage_id == "") {
-        manage_user(user_id);
+        manage_user(user_id, current_user_id);
     } else {
         unmanage_user(user_id, manage_id);
     }
 }
 
-function manage_user(user_id) {
+function manage_user(user_id, current_user_id) {
     var text = JSON.stringify({
         manage: {
-            manager_id: current_user_id,
+            manager_id: parseInt(current_user_id),
             managee_id: parseInt(user_id)
         }
 

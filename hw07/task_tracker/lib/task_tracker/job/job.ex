@@ -122,7 +122,9 @@ defmodule TaskTracker.Job do
 
   """
   def list_timeblocks do
-    Repo.all(Timeblock)
+    query = from tb in Timeblock,
+                 order_by: [desc: tb.created_at]
+    Repo.all(query)
   end
 
   @doc """
@@ -143,7 +145,8 @@ defmodule TaskTracker.Job do
 
   def get_timeblock_by_task_id(task_id) do
     query = from t in Timeblock,
-                 where: t.task_id == ^task_id
+                 where: t.task_id == ^task_id,
+                 order_by: [desc: t.id]
     Repo.all(query)
   end
 

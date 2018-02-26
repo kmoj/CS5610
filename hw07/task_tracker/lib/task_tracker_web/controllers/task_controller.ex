@@ -3,6 +3,8 @@ defmodule TaskTrackerWeb.TaskController do
 
   alias TaskTracker.Job
   alias TaskTracker.Job.Task
+  alias TaskTracker.Account
+  alias TaskTracker.Account.Manage
   alias TaskTracker.Accounts
   alias TaskTracker.Accounts.User
   alias TaskTracker.Job.Timeblock
@@ -69,25 +71,34 @@ defmodule TaskTrackerWeb.TaskController do
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
+    current_user = conn.assigns[:current_user]
     task = Job.get_task!(id)
 
     assigned_to = task_params["assigned_to"]
-    time = String.to_integer(task_params["time"])
+    assignee = Accounts.get_user_by_name(assigned_to)
+    managees = Account.get_managee_user(current_user)
+    managee_users = Account.get_managee_user(current_user)
+    |> Enum.map(fn(x)-> Accounts.get_user!(x.managee_id) end)
+    time = 0
     flag = false
     error_msg = nil
-    if Accounts.get_user_by_name(assigned_to) do
 
-      if time >= 0 do
-          flag = true
+    if Accounts.get_user_by_name(assigned_to) do
+      if Enum.member?(managee_users, assignee) || assignee == current_user do
+        if time >= 0 do
+            flag = true
+        else
+            error_msg = "invalid time input"
+        end
       else
-          error_msg = "invalid time input"
+        error_msg = "the assignee: #{assignee.name} is not under your management"
       end
     else
       error_msg = "user not found"
     end
 
     if flag do
-      task_params = Map.update!(task_params, "time", fn(x) -> Integer.to_string(String.to_integer(x) + task.time)  end)
+#      task_params = Map.update!(task_params, "time", fn(x) -> 0  end)
       case Job.update_task(task, task_params) do
         {:ok, task} ->
           conn
