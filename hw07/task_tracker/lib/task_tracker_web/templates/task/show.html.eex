@@ -51,11 +51,11 @@
                 <tr>
                   <td><%= time_block.id %></td>
                   <td><input class="timeblock-start-input form-control"
-                             value="<%= time_block.start %>"
+                             value="<%= String.slice(NaiveDateTime.to_string(time_block.start), 0..18) %>"
                              style="pointer-events: none"
                              data-timeblock-id= "<%= time_block.id %>"></td>
                   <td><input class="timeblock-end-input form-control"
-                             value="<%= time_block.end %>"
+                             value="<%= String.slice(NaiveDateTime.to_string(time_block.end), 0..18) %>"
                              style="pointer-events: none"
                              data-timeblock-id= "<%= time_block.id %>"></td>
                   <%= if @task.assigned_to == @current_user.name do %>

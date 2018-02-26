@@ -113,6 +113,16 @@ function init_manages() {
          }
      });
 
+     let msg = checkStartEndTime(newStartTime, newEndTime);
+     console.log("new start time" + newStartTime);
+     console.log("msg" + msg);
+     if (msg != "") {
+         alert("ERROR: " + msg)
+         newStartTime = "";
+         newEndTime = "";
+     }
+
+
      let text = JSON.stringify({
          timeblock: {
              end: newEndTime,
@@ -122,8 +132,6 @@ function init_manages() {
 
      });
 
-     console.log(text);
-
      $.ajax(timeblocks_path + "/" + timeblockId, {
          method: "PUT",
          dataType: "json",
@@ -132,9 +140,9 @@ function init_manages() {
          success: (resp) => { toggleBtnInputDisplay()},
          error: function (jqXHR, textStatus, errorThrown) {
              if (jqXHR.status == 422) {
-                 alert("invalid input");
+                 //alert("invalid time input");
              } else {
-                 alert('unexpected error');
+                 //alert('unexpected error');
              }
          },
      });
@@ -213,6 +221,13 @@ function task_submit_click(ev) {
     let endTime = $(endInput).val();
     let taskId = btn.data('task-id');
 
+    let msg = checkStartEndTime(startTime, endTime);
+    if (msg != "") {
+        alert("ERROR: " + msg);
+        startTime = "";
+        endTime = "";
+    }
+
     let text = JSON.stringify({
         timeblock: {
             end: endTime,
@@ -230,13 +245,30 @@ function task_submit_click(ev) {
         success: (resp) => {console.log(resp);},
         error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 422) {
-                alert("invalid time input");
+                //alert("invalid time input");
             } else {
-                alert('unexpected error');
+                //alert('unexpected error');
             }
             location.reload();
         },
     });
+
+}
+
+function checkStartEndTime(startTime, endTime) {
+    let reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+    let r1 = startTime.match(reg);
+    let r2 = endTime.match(reg);
+    let d1 = new Date(startTime);
+    let d2 = new Date(endTime);
+
+    if(r1 == null || r2 == null) {
+        return "time format incorrect";
+    } else if (Date.parse(d1) - Date.parse(d2) > 0) {
+        return "The end time before start time";
+    } else {
+        return "";
+    }
 
 }
 

@@ -12318,6 +12318,15 @@ function timeblock_save_click(ev) {
         }
     });
 
+    var msg = checkStartEndTime(newStartTime, newEndTime);
+    console.log("new start time" + newStartTime);
+    console.log("msg" + msg);
+    if (msg != "") {
+        alert("ERROR: " + msg);
+        newStartTime = "";
+        newEndTime = "";
+    }
+
     var text = JSON.stringify({
         timeblock: {
             end: newEndTime,
@@ -12326,8 +12335,6 @@ function timeblock_save_click(ev) {
         }
 
     });
-
-    console.log(text);
 
     _jquery2.default.ajax(timeblocks_path + "/" + timeblockId, {
         method: "PUT",
@@ -12339,10 +12346,10 @@ function timeblock_save_click(ev) {
         },
         error: function error(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 422) {
-                alert("invalid input");
+                //alert("invalid time input");
             } else {
-                alert('unexpected error');
-            }
+                    //alert('unexpected error');
+                }
         }
     });
 
@@ -12419,6 +12426,13 @@ function task_submit_click(ev) {
     var endTime = (0, _jquery2.default)(endInput).val();
     var taskId = btn.data('task-id');
 
+    var msg = checkStartEndTime(startTime, endTime);
+    if (msg != "") {
+        alert("ERROR: " + msg);
+        startTime = "";
+        endTime = "";
+    }
+
     var text = JSON.stringify({
         timeblock: {
             end: endTime,
@@ -12438,13 +12452,29 @@ function task_submit_click(ev) {
         },
         error: function error(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 422) {
-                alert("invalid time input");
+                //alert("invalid time input");
             } else {
-                alert('unexpected error');
-            }
+                    //alert('unexpected error');
+                }
             location.reload();
         }
     });
+}
+
+function checkStartEndTime(startTime, endTime) {
+    var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+    var r1 = startTime.match(reg);
+    var r2 = endTime.match(reg);
+    var d1 = new Date(startTime);
+    var d2 = new Date(endTime);
+
+    if (r1 == null || r2 == null) {
+        return "time format incorrect";
+    } else if (Date.parse(d1) - Date.parse(d2) > 0) {
+        return "The end time before start time";
+    } else {
+        return "";
+    }
 }
 
 function timer_click(ev) {
