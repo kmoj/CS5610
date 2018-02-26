@@ -12244,7 +12244,9 @@ function manage_click(ev) {
 
     if (manage_id == "") {
         manage_user(user_id);
-    } else {}
+    } else {
+        unmanage_user(user_id, manage_id);
+    }
 }
 
 function manage_user(user_id) {
@@ -12264,6 +12266,19 @@ function manage_user(user_id) {
         error: console.log(text),
         success: function success(resp) {
             set_button(user_id, resp.data.id);
+        }
+    });
+}
+
+function unmanage_user(user_id, manage_id) {
+
+    _jquery2.default.ajax(manage_path + "/" + manage_id, {
+        method: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: "{}",
+        success: function success(_resp) {
+            set_button(user_id, "");
         }
     });
 }

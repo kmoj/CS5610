@@ -39,7 +39,7 @@ function manage_click(ev) {
     if(manage_id == "") {
         manage_user(user_id);
     } else {
-
+        unmanage_user(user_id, manage_id);
     }
 }
 
@@ -59,6 +59,17 @@ function manage_user(user_id) {
         data: text,
         error: console.log(text),
         success: (resp) => {set_button(user_id, resp.data.id);},
+    });
+}
+
+function unmanage_user(user_id, manage_id) {
+
+    $.ajax(manage_path + "/" + manage_id, {
+        method: "DELETE",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: "{}",
+        success: (_resp) => {set_button(user_id, "");},
     });
 }
 
