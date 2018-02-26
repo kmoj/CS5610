@@ -4,18 +4,7 @@
 </script>
 
 <div class="container" >
-    <div class="row">
-        <div class="col">
-            <h1>
-                New Task
-            </h1><span><h5>Assigned as: <%= @current_user.name %></h5></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <%= render TaskTrackerWeb.TaskView, "form.html", Map.put(assigns, :action, task_path(@conn, :create)) %>
-        </div>
-    </div>
+
 
 
 <div class="row">
@@ -37,19 +26,19 @@
                 <tr>
                   <td><%= user.name %></td>
                   <td><%= user.email %></td>
-                  <%=  if !Enum.member?(@manager_users, user) do %>
+                  <%=  if Enum.member?(@manager_users, user) || @current_user.manage_level < user.manage_level do %>
                   <td><button class="manage-button btn btn-primary"
                               data-user-id = "<%= user.id %>"
-                              data-manage = "<%= @managees[user.id] %>">
-                        Manage
-                      </button>
+                              data-manage = ""
+                               disabled= "disabled" >
+                       Manage
+                       </button>
                   </td>
                   <% else %>
                   <td><button class="manage-button btn btn-primary"
                               data-user-id = "<%= user.id %>"
-                              data-manage = ""
-                              disabled= "disabled" >
-                       Manage
+                              data-manage = "<%= @managees[user.id] %>">
+                      Manage
                       </button>
                   </td>
                   <% end %>
@@ -67,7 +56,7 @@
                     <tr>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Manager</th>
+                      <th>Manage Level</th>
 
                       <th></th>
                     </tr>
@@ -77,11 +66,10 @@
                     <tr>
                       <td><%= manager_user.name %></td>
                       <td><%= manager_user.email %></td>
-                      <td><%= manager_user.manager %></td>
+                      <td><%= manager_user.manage_level %></td>
 
                       <td class="text-right">
                         <span><%= link "Show", to: user_path(@conn, :show, manager_user), class: "btn btn-default btn-xs" %></span>
-                        <span><%= link "Edit", to: user_path(@conn, :edit, manager_user), class: "btn btn-default btn-xs" %></span>
                       </td>
                     </tr>
                 <% end %>
@@ -95,7 +83,7 @@
                     <tr>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Manager</th>
+                      <th>Manage Level</th>
 
                       <th></th>
                     </tr>
@@ -105,11 +93,10 @@
                     <tr>
                       <td><%= managee_user.name %></td>
                       <td><%= managee_user.email %></td>
-                      <td><%= managee_user.manager %></td>
+                      <td><%= managee_user.manage_level %></td>
 
                       <td class="text-right">
-                        <span><%= link "Show", to: user_path(@conn, :show, managee_user), class: "btn btn-default btn-xs" %></span>
-                        <span><%= link "Edit", to: user_path(@conn, :edit, managee_user), class: "btn btn-default btn-xs" %></span>
+                        <span><%= link "Assign Task", to: page_path(@conn, :assigns, id: managee_user), class: "btn btn-primary btn-xs" %></span>
                       </td>
                     </tr>
                 <% end %>

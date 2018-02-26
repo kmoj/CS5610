@@ -18,9 +18,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :manager, class: "control-label" %>
-    <%= checkbox f, :manager, class: "checkbox" %>
-    <%= error_tag f, :manager %>
+    <%= label f, :manage_level, class: "control-label" %>
+    <%= number_input f, :manage_level, class: "form-control" %>
+    <%= error_tag f, :manage_level %>
   </div>
 
   <div class="form-group">

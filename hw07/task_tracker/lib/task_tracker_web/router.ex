@@ -20,6 +20,7 @@ defmodule TaskTrackerWeb.Router do
 
     get "/", PageController, :index
     get "/profile", PageController, :profile
+    get "/assigns", PageController, :assigns
 
     resources "/users", UserController
     resources "/tasks", TaskController

@@ -27,4 +27,12 @@ defmodule TaskTrackerWeb.PageController do
     render(conn, "profile.html", users: users, managees: managees, manager_users: manager_users, managee_users: managee_users, changeset: changeset)
   end
 
+  def assigns(conn, %{"id" => id}) do
+#    IO.puts("SSSSSSSSSSSSSSSSSSS")
+#    IO.inspect(params)
+    managee_user = Accounts.get_user!(id)
+    changeset = Job.change_task(%Task{})
+    render( conn, "newTask.html", managee_user: managee_user, changeset: changeset)
+  end
+
 end

@@ -1,0 +1,14 @@
+<div class="container" >
+    <div class="row">
+        <div class="col">
+            <h1>New Task</h1>
+            <h5>Assigned as: <%= @current_user.name %></h5>
+            <h5>Assigned to: <%= @managee_user.name %></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <%= render "newTaskForm.html", Map.put(assigns, :action, task_path(@conn, :create)) %>
+        </div>
+    </div>
+</div>

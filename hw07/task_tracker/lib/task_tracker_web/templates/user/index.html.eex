@@ -5,7 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th>Manager</th>
+      <th>Manage level</th>
 
       <th></th>
     </tr>
@@ -15,7 +15,7 @@
     <tr>
       <td><%= user.name %></td>
       <td><%= user.email %></td>
-      <td><%= user.manager %></td>
+      <td><%= user.manage_level %></td>
 
       <td class="text-right">
         <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
