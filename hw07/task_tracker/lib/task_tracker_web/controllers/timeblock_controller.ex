@@ -12,7 +12,17 @@ defmodule TaskTrackerWeb.TimeblockController do
   end
 
   def create(conn, %{"timeblock" => timeblock_params}) do
-    with {:ok, %Timeblock{} = timeblock} <- Job.create_timeblock(timeblock_params) do
+#    case Job.create_timeblock(timeblock_params) do
+#      {:ok, %Timeblock{} = timeblock} ->
+#        conn
+#        |> put_status(:created)
+#        |> put_flash(:info, "User created successfully.")
+#        |> put_resp_header("location", timeblock_path(conn, :show, timeblock))
+#        |> render("show.json", timeblock: timeblock)
+#      {:error, %Timeblock{} = timeblock} ->
+#        render(conn, TaskTrackerWeb.PageView, "editForm.html")
+#    end
+    with {:ok, %Timeblock{} = timeblock} <- Job.create_timeblock(timeblock_params)  do
       conn
       |> put_status(:created)
       |> put_resp_header("location", timeblock_path(conn, :show, timeblock))

@@ -12275,12 +12275,17 @@ function timeblock_save_click(ev) {
     var taskId = (0, _jquery2.default)(btn).data('task-id');
     var newStartTime = "";
     var newEndTime = "";
+    var theEditBtn = null;
+    var theDeleteBtn = null;
+    var theStartInput = null;
+    var theEndInput = null;
 
     (0, _jquery2.default)(".timeblock-edit-button").each(function () {
         var btn = (0, _jquery2.default)(this);
 
         if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
-            (0, _jquery2.default)(btn).css("display", "");
+            theEditBtn = (0, _jquery2.default)(btn);
+            //$(btn).css("display", "");
         }
     });
 
@@ -12288,7 +12293,8 @@ function timeblock_save_click(ev) {
         var btn = (0, _jquery2.default)(this);
 
         if ((0, _jquery2.default)(btn).data('timeblock-id') == timeblockId) {
-            (0, _jquery2.default)(btn).css("display", "");
+            theDeleteBtn = (0, _jquery2.default)(btn);
+            //$(btn).css("display", "");
         }
     });
 
@@ -12296,7 +12302,8 @@ function timeblock_save_click(ev) {
         var input = (0, _jquery2.default)(this);
 
         if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
-            (0, _jquery2.default)(input).css("pointer-events", "none");
+            //$(input).css("pointer-events", "none");
+            theStartInput = (0, _jquery2.default)(input);
             newStartTime = (0, _jquery2.default)(input).val();
         }
     });
@@ -12305,7 +12312,8 @@ function timeblock_save_click(ev) {
         var input = (0, _jquery2.default)(this);
 
         if ((0, _jquery2.default)(input).data('timeblock-id') == timeblockId) {
-            (0, _jquery2.default)(input).css("pointer-events", "none");
+            theEndInput = (0, _jquery2.default)(input);
+            //$(input).css("pointer-events", "none");
             newEndTime = (0, _jquery2.default)(input).val();
         }
     });
@@ -12319,18 +12327,32 @@ function timeblock_save_click(ev) {
 
     });
 
+    console.log(text);
+
     _jquery2.default.ajax(timeblocks_path + "/" + timeblockId, {
         method: "PUT",
         dataType: "json",
         contentType: "application/json; charset=UTF-8",
         data: text,
-        error: console.log(text),
         success: function success(resp) {
-            console.log(resp);
+            toggleBtnInputDisplay();
+        },
+        error: function error(jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                alert("invalid input");
+            } else {
+                alert('unexpected error');
+            }
         }
     });
 
-    (0, _jquery2.default)(btn).css("display", "none");
+    function toggleBtnInputDisplay() {
+        (0, _jquery2.default)(theEditBtn).css("display", "");
+        (0, _jquery2.default)(theDeleteBtn).css("display", "");
+        (0, _jquery2.default)(theStartInput).css("pointer-events", "none");
+        (0, _jquery2.default)(theEndInput).css("pointer-events", "none");
+        (0, _jquery2.default)(btn).css("display", "none");
+    }
 }
 
 function timeblock_edit_click(ev) {
@@ -12411,9 +12433,16 @@ function task_submit_click(ev) {
         dataType: "json",
         contentType: "application/json; charset=UTF-8",
         data: text,
-        error: console.log(text),
         success: function success(resp) {
             console.log(resp);
+        },
+        error: function error(jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                alert("invalid time input");
+            } else {
+                alert('unexpected error');
+            }
+            location.reload();
         }
     });
 }

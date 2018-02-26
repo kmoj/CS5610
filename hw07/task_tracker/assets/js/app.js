@@ -70,12 +70,17 @@ function init_manages() {
      let taskId = $(btn).data('task-id');
      let newStartTime = "";
      let newEndTime = "";
+     let theEditBtn = null;
+     let theDeleteBtn = null;
+     let theStartInput = null;
+     let theEndInput = null;
 
      $(".timeblock-edit-button").each(function() {
          var btn = $(this);
 
          if ($(btn).data('timeblock-id') == timeblockId){
-             $(btn).css("display", "");
+             theEditBtn = $(btn);
+             //$(btn).css("display", "");
          }
      });
 
@@ -83,7 +88,8 @@ function init_manages() {
          var btn = $(this);
 
          if ($(btn).data('timeblock-id') == timeblockId){
-             $(btn).css("display", "");
+             theDeleteBtn = $(btn);
+             //$(btn).css("display", "");
          }
      });
 
@@ -91,7 +97,8 @@ function init_manages() {
          var input = $(this);
 
          if ($(input).data('timeblock-id') == timeblockId){
-             $(input).css("pointer-events", "none");
+             //$(input).css("pointer-events", "none");
+             theStartInput = $(input);
              newStartTime = $(input).val();
          }
      });
@@ -100,11 +107,11 @@ function init_manages() {
          var input = $(this);
 
          if ($(input).data('timeblock-id') == timeblockId){
-             $(input).css("pointer-events", "none");
+             theEndInput = $(input);
+             //$(input).css("pointer-events", "none");
              newEndTime = $(input).val();
          }
      });
-
 
      let text = JSON.stringify({
          timeblock: {
@@ -115,16 +122,32 @@ function init_manages() {
 
      });
 
+     console.log(text);
+
      $.ajax(timeblocks_path + "/" + timeblockId, {
          method: "PUT",
          dataType: "json",
          contentType: "application/json; charset=UTF-8",
          data: text,
-         error: console.log(text),
-         success: (resp) => {console.log(resp);},
+         success: (resp) => { toggleBtnInputDisplay()},
+         error: function (jqXHR, textStatus, errorThrown) {
+             if (jqXHR.status == 422) {
+                 alert("invalid input");
+             } else {
+                 alert('unexpected error');
+             }
+         },
      });
 
-     $(btn).css("display", "none");
+     function toggleBtnInputDisplay() {
+         $(theEditBtn).css("display", "");
+         $(theDeleteBtn).css("display", "");
+         $(theStartInput).css("pointer-events", "none");
+         $(theEndInput).css("pointer-events", "none");
+         $(btn).css("display", "none");
+     }
+
+
  }
 
 function timeblock_edit_click(ev) {
@@ -204,8 +227,15 @@ function task_submit_click(ev) {
         dataType: "json",
         contentType: "application/json; charset=UTF-8",
         data: text,
-        error: console.log(text),
         success: (resp) => {console.log(resp);},
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                alert("invalid time input");
+            } else {
+                alert('unexpected error');
+            }
+            location.reload();
+        },
     });
 
 }
