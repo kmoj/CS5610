@@ -1,20 +1,7 @@
 
 <div class="container" >
-    <div class="row">
-        <div class="col">
-            <h1>
-                New Task
-            </h1><span><h5>Assigned as: <%= @current_user.name %></h5></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <%= render TaskTrackerWeb.TaskView, "form.html", Map.put(assigns, :action, task_path(@conn, :create)) %>
-        </div>
-    </div>
 
-
-    <div class="row">
+    <div class="row" style="padding-top: 50px;">
         <div class="col-md-6">
 
             <h2>Tasks Assigned To Me</h2>
