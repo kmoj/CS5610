@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export PORT=5200
+export PORT=5300
 export MIX_ENV=prod
-export GIT_PATH=/home/task_tracker/src/task_tracker 
+export GIT_PATH=/home/task_tracker2/src/task_tracker2 
 
 PWD=`pwd`
 if [ $PWD != $GIT_PATH ]; then
@@ -11,8 +11,8 @@ if [ $PWD != $GIT_PATH ]; then
 	exit 1
 fi
 
-if [ $USER != "task_tracker" ]; then
-	echo "Error: must run as user 'task_tracker'"
+if [ $USER != "task_tracker2" ]; then
+	echo "Error: must run as user 'task_tracker2'"
 	echo "  Current user is $USER"
 	exit 2
 fi
@@ -27,17 +27,17 @@ mkdir -p ~/www
 mkdir -p ~/old
 
 NOW=`date +%s`
-if [ -d ~/www/task_tracker ]; then
-	echo mv ~/www/task_tracker ~/old/$NOW
-	mv ~/www/task_tracker ~/old/$NOW
+if [ -d ~/www/task_tracker2 ]; then
+	echo mv ~/www/task_tracker2 ~/old/$NOW
+	mv ~/www/task_tracker2 ~/old/$NOW
 fi
 
-mkdir -p ~/www/task_tracker
-REL_TAR=~/src/task_tracker/_build/prod/rel/task_tracker/releases/0.0.1/task_tracker.tar.gz
-(cd ~/www/task_tracker && tar xzvf $REL_TAR)
+mkdir -p ~/www/task_tracker2
+REL_TAR=~/src/task_tracker2/_build/prod/rel/task_tracker2/releases/0.0.1/task_tracker2.tar.gz
+(cd ~/www/task_tracker2 && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB
-@reboot bash /home/task_tracker/src/task_tracker/start.sh
+@reboot bash /home/task_tracker2/src/task_tracker2/start.sh
 CRONTAB
 
 #. start.sh

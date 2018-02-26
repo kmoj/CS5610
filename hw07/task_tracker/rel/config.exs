@@ -30,13 +30,13 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"TR]1Rw.R|7as&U=g])d*!^]T]G?xleb/vuS)C:PojD/2/lwLtGLO=AnSz,W?)A7c"
+  set cookie: :"j`;ONv3F,mveBY@FA6!C>`Jm/fjF9Eo$aq!7(X~{Jqc4~tCn06vMRu{6{:xg<XDQ"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"qTGy%$231kolul2avT=~({GUsE5yx7xpeAM1O_ibrS3_g@m6)pPRGiz&GSpwjBsI"
+  set cookie: :"5wh)X~z<9GOZmCL{,^pyNF@:6[{8Ij1>ceZ>E<5ZAK*>7$8,qfcf5IJ>^3?Uk,OM"
   set vm_args: "rel/vm.args"
 end
 
@@ -50,7 +50,6 @@ release :task_tracker do
   set applications: [
     :runtime_tools
   ]
-#  set cookie: :"jBZq0eTamPYdeRQGPmwEb41TILpI0DC7F4BoYL0bYxmP7ymTfGdegr2x2+xhaqTt"
   set vm_args: "rel/vm.args"
 end
 

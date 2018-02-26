@@ -14,7 +14,7 @@ config :task_tracker, TaskTrackerWeb.Endpoint,
 # Configure your database
 config :task_tracker, TaskTracker.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "task_tracker",
+  username: "task_tracker2",
   password: "task123",
-  database: "task_tracker_prod",
+  database: "task_tracker2_prod",
   pool_size: 15
