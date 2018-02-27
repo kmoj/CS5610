@@ -242,7 +242,7 @@ function task_submit_click(ev) {
         dataType: "json",
         contentType: "application/json; charset=UTF-8",
         data: text,
-        success: (resp) => {console.log(resp);},
+        success: (resp) => {alert("Task update successfully");},
         error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 422) {
                 //alert("invalid time input");

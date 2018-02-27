@@ -102,7 +102,7 @@ defmodule TaskTrackerWeb.TaskController do
       case Job.update_task(task, task_params) do
         {:ok, task} ->
           conn
-          |> put_flash(:info, "Task updated successfully.")
+          #|> put_flash(:info, "Task updated successfully.")
           |> redirect(to: task_path(conn, :show, task))
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "edit.html", task: task, changeset: changeset)

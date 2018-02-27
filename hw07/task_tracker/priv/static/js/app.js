@@ -12448,7 +12448,7 @@ function task_submit_click(ev) {
         contentType: "application/json; charset=UTF-8",
         data: text,
         success: function success(resp) {
-            console.log(resp);
+            alert("Task update successfully");
         },
         error: function error(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 422) {
