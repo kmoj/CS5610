@@ -12407,23 +12407,30 @@ function timeblock_delete_click(ev) {
     var btn = (0, _jquery2.default)(ev.target);
     var timeblock_id = btn.data('timeblock-id');
 
-    _jquery2.default.ajax(timeblocks_path + "/" + timeblock_id, {
-        method: "DELETE",
-        dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data: "{}",
-        success: function success(_resp) {
-            location.reload();
-        }
-    });
+    var msg = "Are you sure?";
+
+    if (confirm(msg) == true) {
+        _jquery2.default.ajax(timeblocks_path + "/" + timeblock_id, {
+            method: "DELETE",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "{}",
+            success: function success(_resp) {
+                location.reload();
+            }
+        });
+    }
 }
 
 function task_submit_click(ev) {
     var btn = (0, _jquery2.default)(ev.target);
     var startInput = (0, _jquery2.default)(".start-time-input");
     var endInput = (0, _jquery2.default)(".end-time-input");
+    var timeInput = (0, _jquery2.default)(".time-input");
     var startTime = (0, _jquery2.default)(startInput).val();
     var endTime = (0, _jquery2.default)(endInput).val();
+    var startTime2 = (0, _jquery2.default)(startInput).val();
+    var endTime2 = (0, _jquery2.default)(endInput).val();
     var taskId = btn.data('task-id');
 
     var msg = checkStartEndTime(startTime, endTime);
@@ -12431,6 +12438,7 @@ function task_submit_click(ev) {
         alert("ERROR: " + msg);
         startTime = "";
         endTime = "";
+        (0, _jquery2.default)(timeInput).val(-1);
     }
 
     var text = JSON.stringify({
@@ -12456,7 +12464,10 @@ function task_submit_click(ev) {
             } else {
                     //alert('unexpected error');
                 }
+            (0, _jquery2.default)(startInput).val(startTime2);
+            (0, _jquery2.default)(endInput).val(endTime2);
             location.reload();
+            alert((0, _jquery2.default)(endInput).val());
         }
     });
 }
@@ -12580,15 +12591,19 @@ function manage_user(user_id, current_user_id) {
 
 function unmanage_user(user_id, manage_id) {
 
-    _jquery2.default.ajax(manage_path + "/" + manage_id, {
-        method: "DELETE",
-        dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data: "{}",
-        success: function success(_resp) {
-            set_button(user_id, "");
-        }
-    });
+    var msg = "Are you sure? Uncompleted assigned tasks will also be deleted";
+
+    if (confirm(msg) == true) {
+        _jquery2.default.ajax(manage_path + "/" + manage_id, {
+            method: "DELETE",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "{}",
+            success: function success(_resp) {
+                set_button(user_id, "");
+            }
+        });
+    }
 }
 
 function set_button(user_id, manage_id) {

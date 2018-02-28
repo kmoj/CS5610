@@ -65,9 +65,14 @@ defmodule TaskTrackerWeb.TaskController do
   end
 
   def edit(conn, %{"id" => id}) do
+    current_user = conn.assigns[:current_user]
+
+    managee_users = Account.get_managee_user(current_user)
+    |> Enum.map(fn(x)-> Accounts.get_user!(x.managee_id) end)
+
     task = Job.get_task!(id)
     changeset = Job.change_task(task)
-    render(conn, "edit.html", task: task, changeset: changeset)
+    render(conn, "edit.html", task: task, managee_users: managee_users, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
@@ -75,6 +80,7 @@ defmodule TaskTrackerWeb.TaskController do
     task = Job.get_task!(id)
 
     assigned_to = task_params["assigned_to"]
+    time = task_params["time"]
     assignee = Accounts.get_user_by_name(assigned_to)
     managees = Account.get_managee_user(current_user)
     managee_users = Account.get_managee_user(current_user)
@@ -82,6 +88,9 @@ defmodule TaskTrackerWeb.TaskController do
     time = 0
     flag = false
     error_msg = nil
+
+    IO.puts("AAAAAAAAAAAAAAAAAAAAAA")
+    IO.inspect(time)
 
     if Accounts.get_user_by_name(assigned_to) do
       if Enum.member?(managee_users, assignee) || assignee == current_user do
@@ -104,13 +113,13 @@ defmodule TaskTrackerWeb.TaskController do
           conn
           #|> put_flash(:info, "Task updated successfully.")
           |> redirect(to: task_path(conn, :show, task))
-        {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", task: task, changeset: changeset)
+        #{:error, %Ecto.Changeset{} = changeset} ->
+        #  render(conn, "edit.html", task: task, changeset: changeset)
       end
     else
-      conn
-      |> put_flash(:error, "Error: #{error_msg}")
-      |> redirect(to: task_path(conn, :edit, task))
+      #conn
+      #|> put_flash(:error, "Error: #{error_msg}")
+      #|> redirect(to: task_path(conn, :edit, task))
     end
 
   end

@@ -40,9 +40,13 @@
                     <%= if @current_user.name == @task.assigned_to do %>
                     <%= text_input f, :assigned_to, class: "form-control", readonly: "readonly"%>
                     <% else %>
-                    <%= text_input f, :assigned_to, class: "form-control" %>
+                    <%= select f, :assigned_to, Enum.map(@managee_users, &({&1.name, &1.name})), class: "form-control" %>
                     <% end %>
                     <%= error_tag f, :assigned_to %>
+                </div>
+
+                <div class="form-group">
+                    <%= hidden_input f, :time, class: "time-input form-control", value: 0, readonly: "readonly"%>
                 </div>
 
                 <div class="form-group">

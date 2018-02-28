@@ -24,6 +24,13 @@ defmodule TaskTracker.Job do
     |> Repo.preload(:user)
   end
 
+  def get_uncomplete_tasks_by_assigner_assignee(assigner_id, assignee_name) do
+    query = from t in Task,
+                 where: t.assigned_to == ^assignee_name,
+                 where: t.user_id == ^assigner_id,
+                 where: t.complete == false
+    Repo.all(query)
+  end
   @doc """
   Gets a single task.
 

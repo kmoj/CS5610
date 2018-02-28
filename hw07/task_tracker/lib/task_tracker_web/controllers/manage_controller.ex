@@ -3,6 +3,10 @@ defmodule TaskTrackerWeb.ManageController do
 
   alias TaskTracker.Account
   alias TaskTracker.Account.Manage
+  alias TaskTracker.Accounts
+  alias TaskTracker.Accounts.User
+  alias TaskTracker.Job
+  alias TaskTracker.Job.Task
 
   action_fallback TaskTrackerWeb.FallbackController
 
@@ -35,6 +39,10 @@ defmodule TaskTrackerWeb.ManageController do
 
   def delete(conn, %{"id" => id}) do
     manage = Account.get_manage!(id)
+    assignee = Accounts.get_user!(manage.managee_id)
+    tasks = Job.get_uncomplete_tasks_by_assigner_assignee(manage.manager_id, assignee.name)
+    |> Enum.map( fn(x)-> Job.delete_task(x) end)
+
     with {:ok, %Manage{}} <- Account.delete_manage(manage) do
       send_resp(conn, :no_content, "")
     end

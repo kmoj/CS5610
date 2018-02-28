@@ -204,21 +204,30 @@ function timeblock_delete_click(ev) {
     let btn = $(ev.target);
     let timeblock_id = btn.data('timeblock-id');
 
-    $.ajax(timeblocks_path + "/" + timeblock_id, {
-        method: "DELETE",
-        dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data: "{}",
-        success: (_resp) => {location.reload();},
-    });
+    let msg = "Are you sure?"
+
+    if (confirm(msg) == true) {
+        $.ajax(timeblocks_path + "/" + timeblock_id, {
+            method: "DELETE",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "{}",
+            success: (_resp) => {
+                location.reload();
+            },
+        });
+    }
 }
 
 function task_submit_click(ev) {
     let btn = $(ev.target);
     let startInput = $(".start-time-input");
     let endInput = $(".end-time-input");
+    let timeInput = $(".time-input");
     let startTime = $(startInput).val();
     let endTime = $(endInput).val();
+    let startTime2 = $(startInput).val();
+    let endTime2 = $(endInput).val();
     let taskId = btn.data('task-id');
 
     let msg = checkStartEndTime(startTime, endTime);
@@ -226,7 +235,9 @@ function task_submit_click(ev) {
         alert("ERROR: " + msg);
         startTime = "";
         endTime = "";
+        $(timeInput).val(-1);
     }
+
 
     let text = JSON.stringify({
         timeblock: {
@@ -249,7 +260,12 @@ function task_submit_click(ev) {
             } else {
                 //alert('unexpected error');
             }
+            $(startInput).val(startTime2);
+            $(endInput).val(endTime2);
             location.reload();
+            alert($(endInput).val());
+
+
         },
     });
 
@@ -378,13 +394,19 @@ function manage_user(user_id, current_user_id) {
 
 function unmanage_user(user_id, manage_id) {
 
-    $.ajax(manage_path + "/" + manage_id, {
-        method: "DELETE",
-        dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data: "{}",
-        success: (_resp) => {set_button(user_id, "");},
-    });
+    let msg = "Are you sure? Uncompleted assigned tasks will also be deleted"
+
+    if (confirm(msg) == true) {
+        $.ajax(manage_path + "/" + manage_id, {
+            method: "DELETE",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: "{}",
+            success: (_resp) => {
+                set_button(user_id, "");
+            },
+        });
+    }
 }
 
 function set_button(user_id, manage_id) {
