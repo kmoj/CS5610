@@ -1,0 +1,7 @@
+<script>
+  window.gameName = "<%= @game %>";
+  window.userToken = "<%= @current_user %>";
+</script>
+<div id="game">
+  Fetching the game...
+</div>
