@@ -94,7 +94,7 @@ class Othello extends React.Component {
                    <section><header>
                               <h1>GameID: {label}</h1>
                             </header>
-                            <h3><NotificationContainer/></h3>
+                            <h4><NotificationContainer/></h4>
                             <aside><Details status={this}/></aside>
                             <section><Stage width={400} height={400}><Layer>
                                        <Rect width={400} height={400} cornerRadius={8}

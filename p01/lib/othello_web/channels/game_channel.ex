@@ -6,6 +6,19 @@ defmodule OthelloWeb.Gamechannel do
     true
   end
 
+  def finish(res, socket) do
+    resp = Game.exitGame socket.assigns.currentPlayerName,          socket.assigns.current_user
+    broadcast! socket, resp["label"], resp
+    socket
+  end
+
+  def handle_in("restart", %{}, socket) do
+    currentPlayerName = socket.assigns.currentPlayerName
+    resp = Game.rstrtGame currentPlayerName
+    broadcast! socket, "new:state", resp
+    {:reply, {:ok, resp}, socket}
+  end
+
   def join("gamechannel:" <> name, payload, socket) do
     if permission(payload) do
       current_user = socket.assigns.current_user
@@ -27,11 +40,11 @@ defmodule OthelloWeb.Gamechannel do
   def handle_in("move", %{"index" => i}, socket) do
     currentPlayerName = socket.assigns.currentPlayerName
     case Game.nextStatus(currentPlayerName, i) do
-      {true, game} ->
-        broadcast! socket, "new:state", %{"state" => game}
-        {:reply, {:ok, %{"state" => game}}, socket}
-      {false, game} ->
-        {:reply, {:error, %{"state" => game}}, socket}
+      {true, resp} ->
+        broadcast! socket, "new:state", resp
+        {:reply, {:ok, resp}, socket}
+      {false, resp} ->
+        {:reply, {:error, resp}, socket}
     end
   end
 end

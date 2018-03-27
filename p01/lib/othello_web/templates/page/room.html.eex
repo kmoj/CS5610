@@ -1,35 +1,31 @@
-<%= if Kernel.length(Map.keys(@games)) != 0 do %>
-<div class="lobby container-login100" style="background-image: url('/images/bg-01.jpg');">
-  <div class="table100 ver3 m-b-110">
-    <div class="table100-head">
+<div class="lobby clogin" >
+  <div class="tbmg v3">
+    <div class="tbmg-head">
       <table><thead>
-        <tr class="row100 head">
-          <th class="cell100 column1">GameID</th>
-          <th class="cell100 column2">Opponents</th>
-          <th class="cell100 column3">Viewers</th> 
-          <th class="cell100 column4">Action</th></tr>
-       </thead></table>
-     </div>
-     <div class="table100-body js-pscroll">
-     <table><tbody><%= for {name, state} <- @games do %>
-       <tr class="row100 body">
-         <td class="cell100 column1"><%= name %></td>
-           <%= if Kernel.length(state.players) == 1 do %>
-             <td class="cell100 column2"><%= List.first(state.players) %> has joined. Waiting for second player</td>
-           <% else %>
-             <td class="cell100 column2"><%= List.first(state.players) %> v/s <%= List.last(state.players) %></td>
-           <% end %>
-           <td class="cell100 column3"><%= Kernel.length(state.speculators) %></td>
-           <td class="cell100 column4">
-           <%= if Kernel.length(state.players) < 2 || Enum.member?(state.players, @current_user) do %>
-             <span><%= link "Play", to: page_path(@conn, :game, name), class: "btn btn-default btn-xs" %></span>
-           <% else %>
-             <span><%= link "View", to: page_path(@conn, :game, name), class: "btn btn-default btn-xs" %></span>
-           <% end %>
-         </td></tr>
-       <% end %>
-       </tbody></table>
+        <tr><th class="col1">GameID</th>
+            <th class="col2">Opponents</th>
+            <th class="col3">Viewers</th> 
+            <th class="col4">Action</th></tr>
+      </thead></table>
+    </div>
+    <div>
+      <table><tbody><%= for {name, state} <- @games do %>
+        <tr><td class="col1"><%= name %></td>
+            <%= if Kernel.length(state.players) == 1 do %>
+              <td class="col2"><%= List.first(state.players) %> has joined. Waiting for second player</td>
+            <% else %>
+              <td class="col2"><%= List.first(state.players) %> v/s <%= List.last(state.players) %></td>
+            <% end %>
+            <td class="col3"><%= Kernel.length(state.speculators) %></td>
+            <td class="col4">
+            <%= if Kernel.length(state.players) < 2 || Enum.member?(state.players, @current_user) do %>
+              <span><%= link "Play", to: page_path(@conn, :game, name)%></span>
+            <% else %>
+              <span><%= link "View", to: page_path(@conn, :game, name)%></span>
+            <% end %>
+        </td></tr>
+      <% end %>
+      </tbody></table>
     </div>
   </div>
 </div>
-<% end %>

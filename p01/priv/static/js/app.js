@@ -70469,7 +70469,7 @@ var Othello = function (_React$Component) {
               )
             ),
             _react2.default.createElement(
-              'h3',
+              'h4',
               null,
               _react2.default.createElement(_reactNotifications.NotificationContainer, null)
             ),

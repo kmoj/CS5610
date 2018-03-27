@@ -16,7 +16,7 @@ use Mix.Config
 config :othello, OthelloWeb.Endpoint,
   server: true,
   load_from_system_env: true,
-  url: [host: "localhost", port: 5103],
+  #url: [host: "localhost", port: 5103],
   check_origin: false,
   cache_static_manifest: "priv/static/cache_manifest.json"
 

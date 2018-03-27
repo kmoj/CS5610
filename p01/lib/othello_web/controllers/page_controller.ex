@@ -6,9 +6,12 @@ defmodule OthelloWeb.PageController do
     render conn, "enter.html", game: params["game"]
   end
 
-  def index(conn, _params) do
-    games = Game.collectGames
-    render conn, "index.html", games: games
+  def index(conn, params) do
+    if params["info"] do
+      render conn, "index.html", info: params["info"]
+    else
+      render conn, "index.html", info: nil
+    end
   end
 
   def game(conn, params) do
@@ -32,6 +35,11 @@ defmodule OthelloWeb.PageController do
 
   def room(conn, _params) do
     games = Game.collectGames
-    render conn, "room.html", games: games
+    gameCnt = Kernel.length(Map.keys(games))
+    if gameCnt == 0 do
+      render conn, "index.html", info: "No games, create one"
+    else
+      render conn, "room.html", games: games, gameCnt: gameCnt
+    end
   end
 end
