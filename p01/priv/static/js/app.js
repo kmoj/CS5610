@@ -116,7 +116,6 @@
 
 (function() {
 var global = typeof window === 'undefined' ? this : window;
-var process;
 var __makeRelativeRequire = function(require, mappings, pref) {
   var none = {};
   var tryReq = function(name, pref) {
@@ -70215,13 +70214,13 @@ var Index = function (_React$Component) {
         ),
         _react2.default.createElement(
           'button',
-          { className: 'button_base electric',
+          { className: 'btn',
             onClick: function onClick(e) {
               e.preventDefault();
-              if ($('.gameinput div').hasClass('active')) {
-                $('.gameinput div').removeClass('active');
+              if ($('.gmIn div').hasClass('active')) {
+                $('.gmIn div').removeClass('active');
               } else {
-                $('.gameinput div').addClass('active');
+                $('.gmIn div').addClass('active');
               }
             } },
           _react2.default.createElement(
@@ -70232,7 +70231,7 @@ var Index = function (_React$Component) {
         ),
         _react2.default.createElement(
           'form',
-          { className: 'gameinput', onSubmit: function onSubmit(e) {
+          { className: 'gmIn', onSubmit: function onSubmit(e) {
               e.preventDefault();
               window.location = link;
             } },
@@ -70252,7 +70251,7 @@ var Index = function (_React$Component) {
           null,
           _react2.default.createElement(
             'button',
-            { className: 'button_base electric', onClick: function onClick(e) {
+            { className: 'btn', onClick: function onClick(e) {
                 e.preventDefault();
                 window.location = "/lobby";
               } },
@@ -70415,7 +70414,7 @@ var Othello = function (_React$Component) {
         if (resp.state.players[resp.state.winner] == window.userToken) {
           (0, _sweetalert2.default)("Game Over", resp.state.players[resp.state.winner] + ", congratulations, you win");
         } else {
-          (0, _sweetalert2.default)("Game Over", resp.state.players[~resp.state.winner + 2] + "sorry, try again");
+          (0, _sweetalert2.default)("Game Over", resp.state.players[~resp.state.winner + 2] + " sorry, try again");
         }
       }
       var players = this.state.players;
@@ -70586,7 +70585,7 @@ require.alias("react-portal/lib/index.js", "react-portal");
 require.alias("reactstrap/dist/reactstrap.cjs.js", "reactstrap");
 require.alias("sweetalert/dist/sweetalert.min.js", "sweetalert");
 require.alias("underscore/underscore.js", "underscore");
-require.alias("warning/browser.js", "warning");process = require('process');require.register("___globals___", function(exports, require, module) {
+require.alias("warning/browser.js", "warning");require.register("___globals___", function(exports, require, module) {
   
 
 // Auto-loaded modules from config.npm.globals.

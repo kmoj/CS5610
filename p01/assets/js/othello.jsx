@@ -66,7 +66,7 @@ class Othello extends React.Component {
     if(resp.state.winner != null) { if(resp.state.players[resp.state.winner] == window.userToken) {
                                       alrt("Game Over", resp.state.players[resp.state.winner]+", congratulations, you win");}
                                     else {
-                                      alrt("Game Over", resp.state.players[~resp.state.winner + 2]+"sorry, try again");}
+                                      alrt("Game Over", resp.state.players[~resp.state.winner + 2]+" sorry, try again");}
     }
     const players = this.state.players;
     const turn = this.state.turn
