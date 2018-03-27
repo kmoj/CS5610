@@ -70452,46 +70452,46 @@ var Othello = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
-          'div',
+          'header',
           null,
           _react2.default.createElement(
-            'section',
+            'h1',
             null,
+            'GameID: ',
+            label
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: "row" },
+          _react2.default.createElement(
+            'div',
+            { className: "col-3" },
+            _react2.default.createElement(_details2.default, { status: this })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: "col-6", style: { paddingLeft: "80px" } },
             _react2.default.createElement(
-              'header',
-              null,
+              _reactKonva.Stage,
+              { width: 400, height: 400 },
               _react2.default.createElement(
-                'h1',
+                _reactKonva.Layer,
                 null,
-                'GameID: ',
-                label
+                _react2.default.createElement(_reactKonva.Rect, { width: 400, height: 400, cornerRadius: 8,
+                  fillPatternImage: this.state.images['base'], fillPatternScale: 1 }),
+                lns,
+                balls
               )
-            ),
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: "col-3" },
             _react2.default.createElement(
               'h4',
               null,
               _react2.default.createElement(_reactNotifications.NotificationContainer, null)
-            ),
-            _react2.default.createElement(
-              'aside',
-              null,
-              _react2.default.createElement(_details2.default, { status: this })
-            ),
-            _react2.default.createElement(
-              'section',
-              null,
-              _react2.default.createElement(
-                _reactKonva.Stage,
-                { width: 400, height: 400 },
-                _react2.default.createElement(
-                  _reactKonva.Layer,
-                  null,
-                  _react2.default.createElement(_reactKonva.Rect, { width: 400, height: 400, cornerRadius: 8,
-                    fillPatternImage: this.state.images['base'], fillPatternScale: 1 }),
-                  lns,
-                  balls
-                )
-              )
             )
           )
         )

@@ -90,19 +90,28 @@ class Othello extends React.Component {
       lns.push(xcord);
       lns.push(ycord);
     }
-    return (<div><div>
-                   <section><header>
-                              <h1>GameID: {label}</h1>
-                            </header>
-                            <h4><NotificationContainer/></h4>
-                            <aside><Details status={this}/></aside>
-                            <section><Stage width={400} height={400}><Layer>
-                                       <Rect width={400} height={400} cornerRadius={8}
-                                             fillPatternImage={this.state.images['base']} fillPatternScale={1}/>
-                                             {lns}{balls}
-                                         </Layer>
-                                       </Stage>
-                            </section>
-                   </section></div></div>);
+    return (<div>
+                 <header>
+                    <h1>GameID: {label}</h1>
+                 </header>
+                 <div className={"row"}>
+
+                     <div className={"col-3"}>
+                         <Details status={this}/>
+                     </div>
+                     <div className={"col-6"} style={{paddingLeft: "80px"}}>
+                           <Stage width={400} height={400}>
+                            <Layer>
+                                <Rect width={400} height={400} cornerRadius={8}
+                                      fillPatternImage={this.state.images['base']} fillPatternScale={1}/>
+                                      {lns}{balls}
+                            </Layer>
+                           </Stage>
+                     </div>
+                     <div className={"col-3"}>
+                        <h4><NotificationContainer/></h4>
+                     </div>
+                 </div>
+            </div>);
   }
 }
